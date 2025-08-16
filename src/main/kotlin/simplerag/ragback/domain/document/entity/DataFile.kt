@@ -17,7 +17,7 @@ class DataFile(
     val type: String,
 
     @Column(name = "size_mb", nullable = false)
-    val sizeMb: Double,
+    val sizeBytes: Long,
 
     @Column(nullable = false, length = 128)
     val sha256: String,

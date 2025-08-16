@@ -1,15 +1,11 @@
 package simplerag.ragback.global.util
 
 import org.springframework.web.multipart.MultipartFile
-import java.math.BigDecimal
-import java.math.RoundingMode
 import java.security.MessageDigest
-import kotlin.math.round
+import kotlin.math.roundToLong
 
-fun byteToMegaByte(bytes: ByteArray): Double =
-    BigDecimal(bytes.size.toDouble() / (1024.0 * 1024.0))
-        .setScale(3, RoundingMode.HALF_UP)
-        .toDouble()
+fun byteToLong(bytes: ByteArray): Long =
+    bytes.size.toLong()
 
 fun sha256Hex(bytes: ByteArray): String =
     MessageDigest.getInstance("SHA-256")

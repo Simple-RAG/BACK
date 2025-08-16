@@ -89,7 +89,7 @@ class DataFileServiceTest(
             DataFile(
                 title = "exists",
                 type = "text/plain",
-                sizeMb = 0.0,
+                sizeBytes = 0,
                 sha256 = sha,
                 fileUrl = "fake://original/exists.txt",
                 updatedAt = now,

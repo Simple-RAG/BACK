@@ -42,7 +42,7 @@ class DataFileService(
             val bytes = file.bytes
             val sha256 = sha256Hex(bytes)
 
-            val sizeMb = byteToMegaByte(bytes)
+            val sizeByte = byteToLong(bytes)
             val type = file.resolveContentType()
 
             if (dataFileRepository.existsBySha256(sha256)) {
@@ -51,7 +51,7 @@ class DataFileService(
 
             val fileUrl = s3Util.upload(file, S3Type.ORIGINAL_FILE)
 
-            val dataFile = dataFileRepository.save(DataFile(meta.title, type, sizeMb, sha256, fileUrl, now, now))
+            val dataFile = dataFileRepository.save(DataFile(meta.title, type, sizeByte, sha256, fileUrl, now, now))
 
             val tags = getOrCreateTags(meta.tags)
             attachTagsIfMissing(dataFile, tags)
