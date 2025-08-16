@@ -29,13 +29,14 @@ class S3UtilImpl(
         if (file.isEmpty) throw S3Exception(ErrorCode.S3_EMPTY_FILE)
 
         val key = buildKey(dir.label, file.originalFilename)
+        val contentType = file.contentType ?: "application/octet-stream"
 
         try {
             file.inputStream.use { input ->
                 val putReq = PutObjectRequest.builder()
                     .bucket(bucket)
                     .key(key)
-                    .contentType(file.contentType ?: "application/octet-stream")
+                    .contentType(contentType)
                     .build()
 
                 val body = RequestBody.fromInputStream(input, file.size)
