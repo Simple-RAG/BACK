@@ -1,5 +1,6 @@
 package simplerag.ragback.global.error
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import jakarta.validation.ConstraintViolationException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -7,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import simplerag.ragback.global.response.ApiResponse
 import org.slf4j.LoggerFactory
+import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.web.multipart.support.MissingServletRequestPartException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -27,6 +30,37 @@ class GlobalExceptionHandler {
         return ResponseEntity
             .badRequest()
             .body(ApiResponse.fail(ErrorCode.INVALID_INPUT.code, message))
+    }
+
+    @ExceptionHandler(MissingServletRequestPartException::class)
+    fun handleMissingPart(e: MissingServletRequestPartException): ResponseEntity<ApiResponse<Nothing>> {
+        val msg = "필수 '${e.requestPartName}' 가 없습니다."
+        return ResponseEntity
+            .badRequest()
+            .body(ApiResponse.fail(code = "FILE_PART_MISSING", message = msg))
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun handleUnreadable(e: HttpMessageNotReadableException): ResponseEntity<ApiResponse<Nothing>> {
+        val cause = e.cause
+        val msg = when (cause) {
+            is com.fasterxml.jackson.databind.exc.MismatchedInputException -> {
+                val field = cause.path.lastOrNull()?.fieldName ?: "unknown"
+                if (cause.message?.contains("Null value for creator property") == true) {
+                    "'$field' 값이 비어있습니다."
+                } else {
+                    "'$field' 값 타입이 올바르지 않습니다."
+                }
+            }
+            is InvalidFormatException -> {
+                val field = cause.path.lastOrNull()?.fieldName ?: "unknown"
+                "'$field' 값 형식이 올바르지 않습니다."
+            }
+            else -> "유효하지 않은 요청입니다."
+        }
+
+        return ResponseEntity.badRequest()
+            .body(ApiResponse.fail(code = "INVALID_JSON", message = msg))
     }
 
     @ExceptionHandler(FileException::class)
