@@ -1,7 +1,7 @@
 package simplerag.ragback.domain.document.dto
 
 data class DataFileResponseList(
-    val dataFilePreviewResponseList : List<DataFilePreviewResponse>,
+    val dataFilePreviewResponseList: List<DataFilePreviewResponse>,
 )
 
 data class DataFilePreviewResponse(
