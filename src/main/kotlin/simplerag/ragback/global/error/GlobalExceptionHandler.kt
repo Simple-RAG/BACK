@@ -34,7 +34,7 @@ class GlobalExceptionHandler {
         val errorCode = ex.errorCode
         return ResponseEntity
             .status(errorCode.status)
-            .body(ApiResponse.fail(errorCode.code, "${errorCode.message} 파일명: ${ex.message}"))
+            .body(ApiResponse.fail(errorCode.code, "${errorCode.message} sha256: ${ex.message}"))
     }
 
     @ExceptionHandler(CustomException::class)

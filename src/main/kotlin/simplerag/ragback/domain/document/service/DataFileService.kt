@@ -51,7 +51,7 @@ class DataFileService(
             val type = file.resolveContentType()
 
             if (dataFileRepository.existsBySha256(sha256)) {
-                throw FileException(ErrorCode.ALREADY_FILE, meta.title)
+                throw FileException(ErrorCode.ALREADY_FILE, sha256)
             }
 
             val fileUrl = s3Util.upload(file, S3Type.ORIGINAL_FILE)
