@@ -5,13 +5,13 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.databind.exc.InvalidNullException
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import jakarta.validation.ConstraintViolationException
+import org.slf4j.LoggerFactory
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import simplerag.ragback.global.response.ApiResponse
-import org.slf4j.LoggerFactory
-import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.multipart.support.MissingServletRequestPartException
+import simplerag.ragback.global.response.ApiResponse
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -45,18 +45,22 @@ class GlobalExceptionHandler {
                 val field = cause.path.lastOrNull()?.fieldName ?: "unknown"
                 "'$field' 값이 비어있습니다."
             }
+
             is InvalidFormatException -> {
                 val field = cause.path.lastOrNull()?.fieldName ?: "unknown"
                 "'$field' 값 형식이 올바르지 않습니다."
             }
+
             is MismatchedInputException -> {
                 val field = cause.path.lastOrNull()?.fieldName ?: "unknown"
                 "'$field' 값 타입이 올바르지 않습니다."
             }
+
             is JsonParseException -> {
                 // JSON 문법 오류 (콤마, 따옴표 누락 등)
                 "JSON 문법이 올바르지 않습니다."
             }
+
             else -> "유효하지 않은 요청입니다."
         }
 

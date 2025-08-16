@@ -39,7 +39,9 @@ class FakeS3Util : S3Util {
         store.remove(key)
     }
 
-    override fun delete(key: String) { store.remove(key) }
+    override fun delete(key: String) {
+        store.remove(key)
+    }
 
     override fun keyFromUrl(url: String): String? = url.removePrefix("fake://")
         .removePrefix("/")

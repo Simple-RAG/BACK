@@ -13,14 +13,14 @@ import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import java.net.URI
-import java.util.UUID
+import java.util.*
 
 @Component
 @Profile("!test")
 class S3UtilImpl(
     private val s3: S3Client,
     private val s3Config: S3Config,
-): S3Util {
+) : S3Util {
 
     private val bucket get() = s3Config.bucket
     private val log = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
@@ -45,7 +45,8 @@ class S3UtilImpl(
 
             return urlFromKey(key)
         } catch (e: software.amazon.awssdk.services.s3.model.S3Exception) {
-            log.error("S3 putObject fail bucket={}, key={}, status={}, awsCode={}, reqId={}, msg={}",
+            log.error(
+                "S3 putObject fail bucket={}, key={}, status={}, awsCode={}, reqId={}, msg={}",
                 bucket, key, e.statusCode(), e.awsErrorDetails()?.errorCode(), e.requestId(),
                 e.awsErrorDetails()?.errorMessage(), e
             )
