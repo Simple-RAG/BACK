@@ -1,10 +1,12 @@
 package simplerag.ragback.domain.document.dto
 
+import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 
 data class DataFileBulkCreateRequest(
     @field:Size(min = 1, message = "최소 하나 이상 업로드해야 합니다")
+    @Valid
     val items: List<DataFileCreateItem>
 )
 
