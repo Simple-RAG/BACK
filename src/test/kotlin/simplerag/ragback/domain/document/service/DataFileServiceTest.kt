@@ -56,8 +56,8 @@ class DataFileServiceTest(
         assertEquals(sha256Hex(bytes), saved.sha256)
         assertFalse(saved.fileUrl.isNullOrBlank())
 
-        val ai = tagRepository.findByName("ai").orElse(null)
-        val rag = tagRepository.findByName("rag").orElse(null)
+        val ai = tagRepository.findByName("ai")
+        val rag = tagRepository.findByName("rag")
         assertNotNull(ai); assertNotNull(rag)
         assertTrue(dataFileTagRepository.existsByDataFileIdAndTagId(saved.id!!, ai!!.id!!))
         assertTrue(dataFileTagRepository.existsByDataFileIdAndTagId(saved.id!!, rag!!.id!!))

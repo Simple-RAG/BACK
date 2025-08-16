@@ -68,7 +68,7 @@ class DataFileService(
             .filter { it.isNotEmpty() }
             .distinct()
             .map { name ->
-                tagRepository.findByName(name).orElseGet { tagRepository.save(Tag(name = name)) }
+                tagRepository.findByName(name) ?: tagRepository.save(Tag(name = name))
             }
 
     private fun attachTagsIfMissing(dataFile: DataFile, tags: List<Tag>) {

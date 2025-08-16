@@ -6,5 +6,5 @@ import java.util.*
 
 interface TagRepository : JpaRepository<Tag, Long> {
 
-    fun findByName(name: String): Optional<Tag>
+    fun findByName(name: String): Tag?
 }
