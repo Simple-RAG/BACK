@@ -1,5 +1,6 @@
 package simplerag.ragback.domain.document.service
 
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionSynchronization
@@ -57,7 +58,11 @@ class DataFileService(
             val fileUrl = s3Util.upload(file, S3Type.ORIGINAL_FILE)
             uploadedUrls += fileUrl
 
-            val dataFile = dataFileRepository.save(DataFile(meta.title, type, sizeByte, sha256, fileUrl, now, now))
+            val dataFile = try {
+                dataFileRepository.save(DataFile(meta.title, type, sizeByte, sha256, fileUrl, now, now))
+            } catch (ex: DataIntegrityViolationException) {
+                throw FileException(ErrorCode.ALREADY_FILE, sha256)
+            }
 
             val tags = getOrCreateTags(meta.tags)
             attachTagsIfMissing(dataFile, tags)
