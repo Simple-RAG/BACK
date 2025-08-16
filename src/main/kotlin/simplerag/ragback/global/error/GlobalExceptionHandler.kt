@@ -1,8 +1,10 @@
 package simplerag.ragback.global.error
 
+import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
+import com.fasterxml.jackson.databind.exc.InvalidNullException
+import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import jakarta.validation.ConstraintViolationException
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -17,74 +19,66 @@ class GlobalExceptionHandler {
     private val log = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleValidationException(ex: MethodArgumentNotValidException): ResponseEntity<ApiResponse<Nothing>> {
+    fun handleValidationException(ex: MethodArgumentNotValidException): ApiResponse<Nothing> {
         val message = ex.bindingResult.allErrors.first().defaultMessage ?: "잘못된 요청"
-        return ResponseEntity
-            .badRequest()
-            .body(ApiResponse.fail(ErrorCode.INVALID_INPUT.code, message))
+        return ApiResponse.fail(ErrorCode.INVALID_INPUT.code, message)
     }
 
     @ExceptionHandler(ConstraintViolationException::class)
-    fun handleConstraintViolation(ex: ConstraintViolationException): ResponseEntity<ApiResponse<Nothing>> {
+    fun handleConstraintViolation(ex: ConstraintViolationException): ApiResponse<Nothing> {
         val message = ex.constraintViolations.firstOrNull()?.message ?: "잘못된 요청"
-        return ResponseEntity
-            .badRequest()
-            .body(ApiResponse.fail(ErrorCode.INVALID_INPUT.code, message))
+        return ApiResponse.fail(ErrorCode.INVALID_INPUT.code, message)
     }
 
     @ExceptionHandler(MissingServletRequestPartException::class)
-    fun handleMissingPart(e: MissingServletRequestPartException): ResponseEntity<ApiResponse<Nothing>> {
+    fun handleMissingPart(e: MissingServletRequestPartException): ApiResponse<Nothing> {
         val msg = "필수 '${e.requestPartName}' 가 없습니다."
-        return ResponseEntity
-            .badRequest()
-            .body(ApiResponse.fail(code = "FILE_PART_MISSING", message = msg))
+        return ApiResponse.fail(code = "FILE_PART_MISSING", message = msg)
     }
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
-    fun handleUnreadable(e: HttpMessageNotReadableException): ResponseEntity<ApiResponse<Nothing>> {
+    fun handleUnreadable(e: HttpMessageNotReadableException): ApiResponse<Nothing> {
         val cause = e.cause
+
         val msg = when (cause) {
-            is com.fasterxml.jackson.databind.exc.MismatchedInputException -> {
+            is InvalidNullException -> {
                 val field = cause.path.lastOrNull()?.fieldName ?: "unknown"
-                if (cause.message?.contains("Null value for creator property") == true) {
-                    "'$field' 값이 비어있습니다."
-                } else {
-                    "'$field' 값 타입이 올바르지 않습니다."
-                }
+                "'$field' 값이 비어있습니다."
             }
             is InvalidFormatException -> {
                 val field = cause.path.lastOrNull()?.fieldName ?: "unknown"
                 "'$field' 값 형식이 올바르지 않습니다."
             }
+            is MismatchedInputException -> {
+                val field = cause.path.lastOrNull()?.fieldName ?: "unknown"
+                "'$field' 값 타입이 올바르지 않습니다."
+            }
+            is JsonParseException -> {
+                // JSON 문법 오류 (콤마, 따옴표 누락 등)
+                "JSON 문법이 올바르지 않습니다."
+            }
             else -> "유효하지 않은 요청입니다."
         }
 
-        return ResponseEntity.badRequest()
-            .body(ApiResponse.fail(code = "INVALID_JSON", message = msg))
+        return ApiResponse.fail(code = "INVALID_JSON", message = msg)
     }
 
     @ExceptionHandler(FileException::class)
-    fun handleCustomException(ex: FileException): ResponseEntity<ApiResponse<Nothing>> {
+    fun handleCustomException(ex: FileException): ApiResponse<Nothing> {
         val errorCode = ex.errorCode
-        return ResponseEntity
-            .status(errorCode.status)
-            .body(ApiResponse.fail(errorCode.code, "${errorCode.message} sha256: ${ex.message}"))
+        return ApiResponse.fail(errorCode.code, "${errorCode.message} sha256: ${ex.message}")
     }
 
     @ExceptionHandler(CustomException::class)
-    fun handleCustomException(ex: CustomException): ResponseEntity<ApiResponse<Nothing>> {
+    fun handleCustomException(ex: CustomException): ApiResponse<Nothing> {
         val errorCode = ex.errorCode
-        return ResponseEntity
-            .status(errorCode.status)
-            .body(ApiResponse.fail(errorCode.code, errorCode.message))
+        return ApiResponse.fail(errorCode.code, errorCode.message)
     }
 
     @ExceptionHandler(Exception::class)
-    fun handleGeneralException(ex: Exception): ResponseEntity<ApiResponse<Nothing>> {
+    fun handleGeneralException(ex: Exception): ApiResponse<Nothing> {
         log.error("Unhandled exception", ex)
 
-        return ResponseEntity
-            .status(ErrorCode.INTERNAL_ERROR.status)
-            .body(ApiResponse.fail(ErrorCode.INTERNAL_ERROR.code, ErrorCode.INTERNAL_ERROR.message))
+        return ApiResponse.fail(ErrorCode.INTERNAL_ERROR.code, ErrorCode.INTERNAL_ERROR.message)
     }
 }
