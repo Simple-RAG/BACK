@@ -51,7 +51,7 @@ class DataFileService(
 
             val metrics = file.computeMetricsStreaming()
             val sha256 = metrics.sha256
-            val sizeByte = metrics.sizeByte
+            val sizeBytes = metrics.sizeByte
             val type = file.resolveContentType()
 
             if (dataFileRepository.existsBySha256(sha256)) {
@@ -62,7 +62,7 @@ class DataFileService(
             uploadedUrls += fileUrl
 
             val dataFile = try {
-                dataFileRepository.save(DataFile(meta.title, type, sizeByte, sha256, fileUrl, now, now))
+                dataFileRepository.save(DataFile(meta.title, type, sizeBytes, sha256, fileUrl, now, now))
             } catch (ex: DataIntegrityViolationException) {
                 throw FileException(ErrorCode.ALREADY_FILE, sha256)
             }
