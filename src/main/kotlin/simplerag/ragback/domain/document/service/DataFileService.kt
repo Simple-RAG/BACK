@@ -44,10 +44,10 @@ class DataFileService(
 
         val responses = files.mapIndexed { idx, file ->
             val meta = req.items[idx]
-            val bytes = file.bytes
-            val sha256 = sha256Hex(bytes)
 
-            val sizeByte = byteToLong(bytes)
+            val metrics = file.computeMetricsStreaming()
+            val sha256 = metrics.sha256
+            val sizeByte = metrics.sizeByte
             val type = file.resolveContentType()
 
             if (dataFileRepository.existsBySha256(sha256)) {
