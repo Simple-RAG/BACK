@@ -1,0 +1,11 @@
+package simplerag.ragback.domain.document.repository
+
+import org.springframework.data.jpa.repository.JpaRepository
+import simplerag.ragback.domain.document.entity.Tag
+
+interface TagRepository : JpaRepository<Tag, Long> {
+
+    fun findByName(name: String): Tag?
+
+    fun findByNameIn(names: Collection<String>): List<Tag>
+}

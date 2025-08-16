@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: ${DB_URL_LOCAL}
+    username: ${DB_USERNAME_LOCAL}
+    password: ${DB_PASSWORD_LOCAL}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+cloud:
+  aws:
+    region:
+      static: ${REGION_LOCAL}
+    s3:
+      bucket: ${BUCKET_LOCAL}
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID_LOCAL}
+      secret-key: ${AWS_SECRET_ACCESS_KEY_LOCAL}
