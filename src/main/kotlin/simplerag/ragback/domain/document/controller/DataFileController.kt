@@ -18,10 +18,14 @@ class DataFileController(
     private val service: DataFileService
 ) {
 
-    @PostMapping(consumes = [
-        MediaType.MULTIPART_FORM_DATA_VALUE,
-        MediaType.APPLICATION_JSON_VALUE
-    ])
+    @PostMapping(
+        consumes = [
+            MediaType.MULTIPART_FORM_DATA_VALUE,
+        ],
+        produces = [
+            MediaType.APPLICATION_JSON_VALUE
+        ]
+    )
     @ResponseStatus(HttpStatus.CREATED)
     fun upload(
         @RequestPart("files") files: List<MultipartFile>,
