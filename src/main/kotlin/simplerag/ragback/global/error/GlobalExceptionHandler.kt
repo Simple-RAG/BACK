@@ -26,6 +26,14 @@ class GlobalExceptionHandler {
             .body(ApiResponse.fail(ErrorCode.INVALID_INPUT.code, message))
     }
 
+    @ExceptionHandler(FileException::class)
+    fun handleCustomException(ex: FileException): ResponseEntity<ApiResponse<Nothing>> {
+        val errorCode = ex.errorCode
+        return ResponseEntity
+            .status(errorCode.status)
+            .body(ApiResponse.fail(errorCode.code, "${errorCode.message} 파일명: ${ex.message}"))
+    }
+
     @ExceptionHandler(CustomException::class)
     fun handleCustomException(ex: CustomException): ResponseEntity<ApiResponse<Nothing>> {
         val errorCode = ex.errorCode
@@ -36,6 +44,8 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception::class)
     fun handleGeneralException(ex: Exception): ResponseEntity<ApiResponse<Nothing>> {
+        ex.printStackTrace()
+
         return ResponseEntity
             .status(ErrorCode.INTERNAL_ERROR.status)
             .body(ApiResponse.fail(ErrorCode.INTERNAL_ERROR.code, ErrorCode.INTERNAL_ERROR.message))
