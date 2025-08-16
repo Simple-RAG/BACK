@@ -45,8 +45,8 @@ class DataFileServiceTest(
         val res = service.upload(listOf(f), req)
 
         // then
-        assertEquals(1, res.dataFileResponseList.size)
-        val r0 = res.dataFileResponseList.first()
+        assertEquals(1, res.dataFilePreviewResponseList.size)
+        val r0 = res.dataFilePreviewResponseList.first()
         assertTrue(r0.id > 0)
         assertEquals(sha256Hex(bytes), r0.sha256)
 
@@ -119,7 +119,7 @@ class DataFileServiceTest(
         val res = service.upload(listOf(f), req)
 
         // then
-        val saved = dataFileRepository.findById(res.dataFileResponseList.first().id).orElseThrow()
+        val saved = dataFileRepository.findById(res.dataFilePreviewResponseList.first().id).orElseThrow()
         assertEquals("application/octet-stream", saved.type)
     }
 

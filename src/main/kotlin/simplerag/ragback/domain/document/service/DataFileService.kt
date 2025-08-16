@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import simplerag.ragback.domain.document.dto.DataFileBulkCreateRequest
-import simplerag.ragback.domain.document.dto.DataFileResponse
+import simplerag.ragback.domain.document.dto.DataFilePreviewResponse
 import simplerag.ragback.domain.document.dto.DataFileResponseList
 import simplerag.ragback.domain.document.entity.DataFile
 import simplerag.ragback.domain.document.entity.DataFileTag
@@ -56,7 +56,7 @@ class DataFileService(
             val tags = getOrCreateTags(meta.tags)
             attachTagsIfMissing(dataFile, tags)
 
-            DataFileResponse(requireNotNull(dataFile.id), dataFile.sha256)
+            DataFilePreviewResponse(requireNotNull(dataFile.id), dataFile.sha256)
         }
 
         return DataFileResponseList(responses)
