@@ -82,7 +82,7 @@ class DataFileService(
 
 
     private fun getOrCreateTags(names: List<String>): List<Tag> =
-        names.map { it.trim() }
+        names.map { it.trim().uppercase() }
             .filter { it.isNotEmpty() }
             .distinct()
             .map { name ->
