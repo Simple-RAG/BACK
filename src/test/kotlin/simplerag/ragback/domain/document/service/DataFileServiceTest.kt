@@ -48,7 +48,7 @@ class DataFileServiceTest(
         // given
         val bytes = "hello world".toByteArray()
         val req = DataFileBulkCreateRequest(
-            listOf(DataFileCreateItem(title = "greeting", tags = listOf(" ai ", "rag", "ai")))
+            listOf(DataFileCreateItem(title = "greeting", tags = listOf(" ai ", "RAG", "ai")))
         )
         val f = file("greet.txt", bytes, contentType = "text/plain")
 
@@ -67,8 +67,8 @@ class DataFileServiceTest(
         assertEquals(sha256Hex(bytes), saved.sha256)
         assertFalse(saved.fileUrl.isNullOrBlank())
 
-        val ai = tagRepository.findByName("ai")
-        val rag = tagRepository.findByName("rag")
+        val ai = tagRepository.findByName("AI")
+        val rag = tagRepository.findByName("RAG")
         assertNotNull(ai); assertNotNull(rag)
         assertTrue(dataFileTagRepository.existsByDataFileIdAndTagId(saved.id!!, ai!!.id!!))
         assertTrue(dataFileTagRepository.existsByDataFileIdAndTagId(saved.id!!, rag!!.id!!))
