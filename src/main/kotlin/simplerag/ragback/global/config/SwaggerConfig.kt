@@ -25,7 +25,7 @@ class SwaggerConfig {
                     SecurityScheme()
                         .name(jwtSchemeName)
                         .type(SecurityScheme.Type.HTTP)
-                        .scheme("Bearer")
+                        .scheme("bearer")
                         .bearerFormat("JWT")
                 )
 
