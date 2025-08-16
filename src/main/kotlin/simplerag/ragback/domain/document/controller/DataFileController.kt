@@ -1,7 +1,9 @@
 package simplerag.ragback.domain.document.controller
 
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import simplerag.ragback.domain.document.dto.DataFileBulkCreateRequest
@@ -11,11 +13,16 @@ import simplerag.ragback.global.response.ApiResponse
 
 @RestController
 @RequestMapping("/api/v1/data-files")
+@Validated
 class DataFileController(
     private val service: DataFileService
 ) {
 
-    @PostMapping(consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PostMapping(consumes = [
+        MediaType.MULTIPART_FORM_DATA_VALUE,
+        MediaType.APPLICATION_JSON_VALUE
+    ])
+    @ResponseStatus(HttpStatus.CREATED)
     fun upload(
         @RequestPart("files") files: List<MultipartFile>,
         @Valid @RequestPart("request") req: DataFileBulkCreateRequest
