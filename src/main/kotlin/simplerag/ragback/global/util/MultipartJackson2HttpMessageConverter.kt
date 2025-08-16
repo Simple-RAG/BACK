@@ -8,8 +8,8 @@ import java.lang.reflect.Type
 
 @Component
 class MultipartJackson2HttpMessageConverter
-    (objectMapper: ObjectMapper?) :
-    AbstractJackson2HttpMessageConverter(objectMapper!!, MediaType.APPLICATION_OCTET_STREAM) {
+    (objectMapper: ObjectMapper) :
+    AbstractJackson2HttpMessageConverter(objectMapper, MediaType.APPLICATION_OCTET_STREAM) {
 
     override fun canWrite(clazz: Class<*>, mediaType: MediaType?): Boolean {
         return false
