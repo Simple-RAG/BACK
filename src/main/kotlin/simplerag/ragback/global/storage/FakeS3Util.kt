@@ -32,7 +32,12 @@ class FakeS3Util : S3Util {
 
     override fun urlFromKey(key: String): String = "fake://$key"
 
-    override fun deleteByUrl(url: String) { keyFromUrl(url)?.let { store.remove(it) } }
+    override fun deleteByUrl(url: String) {
+        val key = keyFromUrl(url) ?: throw simplerag.ragback.global.error.S3Exception(
+            simplerag.ragback.global.error.ErrorCode.S3_INVALID_URL
+        )
+        store.remove(key)
+    }
 
     override fun delete(key: String) { store.remove(key) }
 
