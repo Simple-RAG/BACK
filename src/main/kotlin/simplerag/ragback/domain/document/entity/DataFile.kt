@@ -22,6 +22,8 @@ data class DataFile(
     @Column(nullable = false, length = 128)
     val sha256: String,
 
+    val fileUrl: String,
+
     val updatedAt: LocalDateTime,
 
     val createdAt: LocalDateTime,

@@ -5,6 +5,7 @@ import jakarta.persistence.*
 @Entity
 @Table(
     name = "data_file_tags",
+    uniqueConstraints = [UniqueConstraint(columnNames = ["data_file_id", "tag_id"])]
 )
 class DataFileTag(
 
