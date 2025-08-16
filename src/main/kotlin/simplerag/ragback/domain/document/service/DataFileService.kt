@@ -40,15 +40,7 @@ class DataFileService(
         val now = LocalDateTime.now()
         val uploadedUrls = mutableListOf<String>()
 
-        if (TransactionSynchronizationManager.isSynchronizationActive()) {
-            TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
-                override fun afterCompletion(status: Int) {
-                    if (status == TransactionSynchronization.STATUS_ROLLED_BACK) {
-                        uploadedUrls.forEach { runCatching { s3Util.deleteByUrl(it) } }
-                    }
-                }
-            })
-        }
+        registerRollbackCleanup(uploadedUrls)
 
         val responses = files.mapIndexed { idx, file ->
             val meta = req.items[idx]
@@ -74,6 +66,18 @@ class DataFileService(
         }
 
         return DataFileResponseList(responses)
+    }
+
+    private fun registerRollbackCleanup(uploadedUrls: MutableList<String>) {
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+                override fun afterCompletion(status: Int) {
+                    if (status == TransactionSynchronization.STATUS_ROLLED_BACK) {
+                        uploadedUrls.forEach { runCatching { s3Util.deleteByUrl(it) } }
+                    }
+                }
+            })
+        }
     }
 
 
