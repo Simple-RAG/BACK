@@ -12,6 +12,7 @@ data class DataFileBulkCreateRequest(
 
 data class DataFileCreateItem(
     @field:NotBlank(message = "title은 비어있을 수 없습니다")
+    @field:Size(max = 100)
     val title: String,
 
     @field:Size(max = 10, message = "태그는 최대 10개까지 가능합니다")
