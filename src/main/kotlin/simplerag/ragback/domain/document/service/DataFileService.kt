@@ -19,6 +19,7 @@ import simplerag.ragback.global.util.S3Type
 import simplerag.ragback.global.util.S3Util
 import java.security.MessageDigest
 import java.time.LocalDateTime
+import kotlin.math.round
 
 @Service
 class DataFileService(
@@ -44,10 +45,8 @@ class DataFileService(
             val bytes = file.bytes
             val sha256 = sha256Hex(bytes)
 
-            val sizeMb = kotlin.math.round((bytes.size / (1024.0 * 1024.0)) * 1000) / 1000.0
-            val type = file.contentType
-                ?: file.originalFilename?.substringAfterLast('.', "application/octet-stream")
-                ?: "application/octet-stream"
+            val sizeMb = byteToMegaByte(bytes)
+            val type = file.resolveContentType()
 
             if (dataFileRepository.existsBySha256(sha256)) {
                 throw FileException(ErrorCode.ALREADY_FILE, meta.title)
@@ -55,9 +54,7 @@ class DataFileService(
 
             val fileUrl = s3Util.upload(file, S3Type.ORIGINAL_FILE)
 
-            val dataFile = dataFileRepository.save(
-                DataFile(meta.title, type, sizeMb, sha256, fileUrl, now, now)
-            )
+            val dataFile = dataFileRepository.save(DataFile(meta.title, type, sizeMb, sha256, fileUrl, now, now))
 
             val tags = getOrCreateTags(meta.tags)
             attachTagsIfMissing(dataFile, tags)
@@ -68,8 +65,10 @@ class DataFileService(
         return DataFileResponseList(responses)
     }
 
+    private fun byteToMegaByte(bytes: ByteArray) = round((bytes.size / (1024.0 * 1024.0)) * 1000) / 1000.0
+
     private fun getOrCreateTags(names: List<String>): List<Tag> =
-        names.mapNotNull { it.trim() }
+        names.map { it.trim() }
             .filter { it.isNotEmpty() }
             .distinct()
             .map { name ->
@@ -85,6 +84,12 @@ class DataFileService(
                 dataFileTagRepository.save(DataFileTag(tag = tag, dataFile = dataFile))
             }
         }
+    }
+
+    fun MultipartFile.resolveContentType(): String {
+        return this.contentType
+            ?: this.originalFilename?.substringAfterLast('.', "application/octet-stream")
+            ?: "application/octet-stream"
     }
 
     private fun sha256Hex(bytes: ByteArray): String {
