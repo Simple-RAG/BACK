@@ -21,7 +21,6 @@ import simplerag.ragback.global.error.ErrorCode
 import simplerag.ragback.global.error.FileException
 import simplerag.ragback.global.storage.FakeS3Util
 import simplerag.ragback.global.util.S3Type
-import simplerag.ragback.global.util.S3Util
 import simplerag.ragback.global.util.sha256Hex
 import java.security.MessageDigest
 import java.time.LocalDateTime
@@ -29,7 +28,7 @@ import java.time.LocalDateTime
 @SpringBootTest
 @ActiveProfiles("test")
 class DataFileServiceTest(
-    @Autowired private val service: DataFileService,
+    @Autowired private val dataFileService: DataFileService,
     @Autowired private val dataFileRepository: DataFileRepository,
     @Autowired private val tagRepository: TagRepository,
     @Autowired private val dataFileTagRepository: DataFileTagRepository,
@@ -53,7 +52,7 @@ class DataFileServiceTest(
         val f = file("greet.txt", bytes, contentType = "text/plain")
 
         // when
-        val res = service.upload(listOf(f), req)
+        val res = dataFileService.upload(listOf(f), req)
 
         // then
         assertEquals(1, res.dataFilePreviewResponseList.size)
@@ -82,7 +81,7 @@ class DataFileServiceTest(
         val f = file("a.txt", "a".toByteArray())
 
         // when
-        val ex = assertThrows(CustomException::class.java) { service.upload(listOf(f), req) }
+        val ex = assertThrows(CustomException::class.java) { dataFileService.upload(listOf(f), req) }
 
         // then
         assertEquals(ErrorCode.INVALID_INPUT, ex.errorCode)
@@ -111,7 +110,7 @@ class DataFileServiceTest(
         val f = file("dup.txt", bytes)
 
         // when
-        val ex = assertThrows(FileException::class.java) { service.upload(listOf(f), req) }
+        val ex = assertThrows(FileException::class.java) { dataFileService.upload(listOf(f), req) }
 
         // then
         assertEquals(ErrorCode.ALREADY_FILE, ex.errorCode)
@@ -127,7 +126,7 @@ class DataFileServiceTest(
         val f = file(name = "noext", content = bytes, contentType = null) // no extension
 
         // when
-        val res = service.upload(listOf(f), req)
+        val res = dataFileService.upload(listOf(f), req)
 
         // then
         val saved = dataFileRepository.findById(res.dataFilePreviewResponseList.first().id).orElseThrow()
@@ -145,8 +144,8 @@ class DataFileServiceTest(
         val f2 = file("y.txt", bytes)
 
         // when
-        service.upload(listOf(f1), req)
-        val ex = assertThrows(FileException::class.java) { service.upload(listOf(f2), req) }
+        dataFileService.upload(listOf(f1), req)
+        val ex = assertThrows(FileException::class.java) { dataFileService.upload(listOf(f2), req) }
 
         // then
         assertEquals(ErrorCode.ALREADY_FILE, ex.errorCode)
@@ -164,7 +163,7 @@ class DataFileServiceTest(
 
         // when
         val resultIds = txTemplate().execute {
-            val res = service.upload(listOf(f), req)
+            val res = dataFileService.upload(listOf(f), req)
             res.dataFilePreviewResponseList.map { it.id }
         }!!
 
@@ -199,7 +198,7 @@ class DataFileServiceTest(
 
         // when: 트랜잭션 내에서 업로드 후 강제 롤백
         txTemplate().execute { status ->
-            service.upload(listOf(f), req)
+            dataFileService.upload(listOf(f), req)
             status!!.setRollbackOnly()
         }
 

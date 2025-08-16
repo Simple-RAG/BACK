@@ -15,7 +15,7 @@ import simplerag.ragback.global.response.ApiResponse
 @RequestMapping("/api/v1/data-files")
 @Validated
 class DataFileController(
-    private val service: DataFileService
+    private val dataFileService: DataFileService
 ) {
 
     @PostMapping(
@@ -31,7 +31,7 @@ class DataFileController(
         @RequestPart("files") files: List<MultipartFile>,
         @Valid @RequestPart("request") req: DataFileBulkCreateRequest
     ): ApiResponse<DataFileResponseList> {
-        val saved = service.upload(files, req)
+        val saved = dataFileService.upload(files, req)
         return ApiResponse.ok(saved, "업로드 완료")
     }
 
