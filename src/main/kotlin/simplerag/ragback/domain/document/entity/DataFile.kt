@@ -16,7 +16,7 @@ class DataFile(
     @Column(name = "file_type", nullable = false, length = 120)
     val type: String,
 
-    @Column(name = "size_mb", nullable = false)
+    @Column(name = "size_bytes", nullable = false)
     val sizeBytes: Long,
 
     @Column(nullable = false, length = 64)
