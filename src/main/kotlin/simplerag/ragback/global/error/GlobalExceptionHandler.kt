@@ -6,9 +6,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import simplerag.ragback.global.response.ApiResponse
+import org.slf4j.LoggerFactory
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
+
+    private val log = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidationException(ex: MethodArgumentNotValidException): ResponseEntity<ApiResponse<Nothing>> {
@@ -44,7 +47,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception::class)
     fun handleGeneralException(ex: Exception): ResponseEntity<ApiResponse<Nothing>> {
-        ex.printStackTrace()
+        log.error("Unhandled exception", ex)
 
         return ResponseEntity
             .status(ErrorCode.INTERNAL_ERROR.status)
