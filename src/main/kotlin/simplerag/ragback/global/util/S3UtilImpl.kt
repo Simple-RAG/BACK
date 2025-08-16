@@ -90,7 +90,13 @@ class S3UtilImpl(
 
         val prefix = dir.trim('/')
 
-        return "$prefix/${UUID.randomUUID()}_$cleanName"
+        val key = if (prefix.isBlank()) {
+            "${UUID.randomUUID()}_$cleanName"
+        } else {
+            "$prefix/${UUID.randomUUID()}_$cleanName"
+        }
+
+        return key
     }
 
     override fun keyFromUrl(url: String): String? {
