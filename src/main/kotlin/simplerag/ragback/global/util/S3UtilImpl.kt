@@ -1,10 +1,12 @@
 package simplerag.ragback.global.util
 
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import simplerag.ragback.global.config.S3Config
 import simplerag.ragback.global.error.ErrorCode
+import simplerag.ragback.global.error.GlobalExceptionHandler
 import simplerag.ragback.global.error.S3Exception
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.services.s3.S3Client
@@ -19,7 +21,9 @@ class S3UtilImpl(
     private val s3: S3Client,
     private val s3Config: S3Config,
 ): S3Util {
+
     private val bucket get() = s3Config.bucket
+    private val log = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
 
     override fun upload(file: MultipartFile, dir: S3Type): String {
         if (file.isEmpty) throw S3Exception(ErrorCode.S3_EMPTY_FILE)
@@ -40,8 +44,13 @@ class S3UtilImpl(
 
             return urlFromKey(key)
         } catch (e: software.amazon.awssdk.services.s3.model.S3Exception) {
+            log.error("S3 putObject fail bucket={}, key={}, status={}, awsCode={}, reqId={}, msg={}",
+                bucket, key, e.statusCode(), e.awsErrorDetails()?.errorCode(), e.requestId(),
+                e.awsErrorDetails()?.errorMessage(), e
+            )
             throw S3Exception(ErrorCode.S3_UPLOAD_FAIL)
         } catch (e: Exception) {
+            log.error(e.message, e)
             throw S3Exception(ErrorCode.S3_UPLOAD_FAIL)
         }
     }
