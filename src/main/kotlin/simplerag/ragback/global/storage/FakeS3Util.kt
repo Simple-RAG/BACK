@@ -36,8 +36,9 @@ class FakeS3Util : S3Util {
 
     override fun delete(key: String) { store.remove(key) }
 
-    override fun keyFromUrl(url: String): String? =
-        url.removePrefix("fake://").ifBlank { null }
+    override fun keyFromUrl(url: String): String? = url.removePrefix("fake://")
+        .removePrefix("/")
+        .ifBlank { null }
 
     // 테스트 용 함수
     fun exists(url: String): Boolean = keyFromUrl(url)?.let { store.containsKey(it) } == true
