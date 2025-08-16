@@ -2,6 +2,8 @@ package simplerag.ragback.domain.document.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.web.multipart.MultipartFile
 import simplerag.ragback.domain.document.dto.DataFileBulkCreateRequest
 import simplerag.ragback.domain.document.dto.DataFilePreviewResponse
@@ -36,6 +38,17 @@ class DataFileService(
         }
 
         val now = LocalDateTime.now()
+        val uploadedUrls = mutableListOf<String>()
+
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+                override fun afterCompletion(status: Int) {
+                    if (status == TransactionSynchronization.STATUS_ROLLED_BACK) {
+                        uploadedUrls.forEach { runCatching { s3Util.deleteByUrl(it) } }
+                    }
+                }
+            })
+        }
 
         val responses = files.mapIndexed { idx, file ->
             val meta = req.items[idx]
@@ -50,6 +63,7 @@ class DataFileService(
             }
 
             val fileUrl = s3Util.upload(file, S3Type.ORIGINAL_FILE)
+            uploadedUrls += fileUrl
 
             val dataFile = dataFileRepository.save(DataFile(meta.title, type, sizeByte, sha256, fileUrl, now, now))
 

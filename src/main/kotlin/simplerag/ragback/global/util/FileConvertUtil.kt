@@ -2,7 +2,6 @@ package simplerag.ragback.global.util
 
 import org.springframework.web.multipart.MultipartFile
 import java.security.MessageDigest
-import kotlin.math.roundToLong
 
 fun byteToLong(bytes: ByteArray): Long =
     bytes.size.toLong()

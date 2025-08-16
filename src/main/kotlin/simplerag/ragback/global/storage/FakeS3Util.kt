@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import simplerag.ragback.global.util.S3Type
 import simplerag.ragback.global.util.S3Util
+import simplerag.ragback.global.util.sha256Hex
 import java.security.MessageDigest
 import java.util.concurrent.ConcurrentHashMap
 
@@ -20,7 +21,7 @@ class FakeS3Util : S3Util {
         val clean = (file.originalFilename ?: "file")
             .substringAfterLast('/').substringAfterLast('\\').ifBlank { "file" }
 
-        val hash = sha256(file.bytes).take(12)
+        val hash = sha256Hex(file.bytes).take(12)
         val key = "${dir.label}/${hash}_$clean"
 
         store[key] = file.bytes
@@ -36,8 +37,7 @@ class FakeS3Util : S3Util {
     override fun keyFromUrl(url: String): String? =
         url.removePrefix("fake://").ifBlank { null }
 
-    private fun sha256(bytes: ByteArray): String {
-        val md = MessageDigest.getInstance("SHA-256")
-        return md.digest(bytes).joinToString("") { "%02x".format(it) }
-    }
+    // 테스트 용 함수
+    fun exists(url: String): Boolean = keyFromUrl(url)?.let { store.containsKey(it) } == true
+    fun count(): Int = store.size
 }
