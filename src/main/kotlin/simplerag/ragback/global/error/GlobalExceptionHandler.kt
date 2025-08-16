@@ -33,7 +33,7 @@ class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestPartException::class)
     fun handleMissingPart(e: MissingServletRequestPartException): ApiResponse<Nothing> {
         val msg = "필수 '${e.requestPartName}' 가 없습니다."
-        return ApiResponse.fail(code = "FILE_PART_MISSING", message = msg)
+        return ApiResponse.fail(ErrorCode.FILE_PART_MISSING.code, message = msg)
     }
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
@@ -60,7 +60,7 @@ class GlobalExceptionHandler {
             else -> "유효하지 않은 요청입니다."
         }
 
-        return ApiResponse.fail(code = "INVALID_JSON", message = msg)
+        return ApiResponse.fail(ErrorCode.INVALID_JSON.code, message = msg)
     }
 
     @ExceptionHandler(FileException::class)
