@@ -15,11 +15,8 @@ import simplerag.ragback.domain.document.repository.TagRepository
 import simplerag.ragback.global.error.CustomException
 import simplerag.ragback.global.error.ErrorCode
 import simplerag.ragback.global.error.FileException
-import simplerag.ragback.global.util.S3Type
-import simplerag.ragback.global.util.S3Util
-import java.security.MessageDigest
+import simplerag.ragback.global.util.*
 import java.time.LocalDateTime
-import kotlin.math.round
 
 @Service
 class DataFileService(
@@ -65,7 +62,6 @@ class DataFileService(
         return DataFileResponseList(responses)
     }
 
-    private fun byteToMegaByte(bytes: ByteArray) = round((bytes.size / (1024.0 * 1024.0)) * 1000) / 1000.0
 
     private fun getOrCreateTags(names: List<String>): List<Tag> =
         names.map { it.trim() }
@@ -84,18 +80,6 @@ class DataFileService(
                 dataFileTagRepository.save(DataFileTag(tag = tag, dataFile = dataFile))
             }
         }
-    }
-
-    fun MultipartFile.resolveContentType(): String {
-        return this.contentType
-            ?: this.originalFilename?.substringAfterLast('.', "application/octet-stream")
-            ?: "application/octet-stream"
-    }
-
-    private fun sha256Hex(bytes: ByteArray): String {
-        val md = MessageDigest.getInstance("SHA-256")
-        val digest = md.digest(bytes)
-        return digest.joinToString("") { "%02x".format(it) }
     }
 
 }
