@@ -23,6 +23,7 @@ import simplerag.ragback.global.util.S3Util
 import simplerag.ragback.global.util.computeMetricsStreaming
 import simplerag.ragback.global.util.resolveContentType
 import java.time.LocalDateTime
+import java.util.*
 
 @Service
 class DataFileService(
@@ -90,7 +91,7 @@ class DataFileService(
 
 
     private fun getOrCreateTags(names: List<String>): List<Tag> {
-        val normalized = names.map { it.trim().uppercase() }
+        val normalized = names.map { it.trim().uppercase(Locale.ROOT) }
             .filter { it.isNotEmpty() }
             .distinct()
 
