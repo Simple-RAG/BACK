@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile
 import simplerag.ragback.global.util.S3Type
 import simplerag.ragback.global.util.S3Util
 import simplerag.ragback.global.util.sha256Hex
-import java.security.MessageDigest
 import java.util.concurrent.ConcurrentHashMap
 
 @Component
@@ -19,10 +18,13 @@ class FakeS3Util : S3Util {
 
     override fun upload(file: MultipartFile, dir: S3Type): String {
         val clean = (file.originalFilename ?: "file")
-            .substringAfterLast('/').substringAfterLast('\\').ifBlank { "file" }
+            .substringAfterLast('/')
+            .substringAfterLast('\\')
+            .ifBlank { "file" }
 
         val hash = sha256Hex(file.bytes).take(12)
-        val key = "${dir.label}/${hash}_$clean"
+        val prefix = dir.label.trim('/')
+        val key = "$prefix/${hash}_$clean"
 
         store[key] = file.bytes
         return urlFromKey(key)
