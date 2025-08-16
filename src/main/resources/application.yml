@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: rag-backend
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 200MB
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
@@ -25,3 +29,13 @@ logging:
     root: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+cloud:
+  aws:
+    region:
+      static: ${REGION}
+    s3:
+      bucket: ${BUCKET}
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
