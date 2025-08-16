@@ -89,13 +89,21 @@ class DataFileService(
     }
 
 
-    private fun getOrCreateTags(names: List<String>): List<Tag> =
-        names.map { it.trim().uppercase() }
+    private fun getOrCreateTags(names: List<String>): List<Tag> {
+        val normalized = names.map { it.trim().uppercase() }
             .filter { it.isNotEmpty() }
             .distinct()
-            .map { name ->
-                tagRepository.findByName(name) ?: tagRepository.save(Tag(name = name))
-            }
+
+        val existing = tagRepository.findByNameIn(normalized)
+        val existingMap = existing.associateBy { it.name }
+
+        val toCreate = normalized.filterNot { existingMap.containsKey(it) }
+            .map { Tag(name = it) }
+
+        val saved = if (toCreate.isNotEmpty()) tagRepository.saveAll(toCreate) else emptyList()
+
+        return existing + saved
+    }
 
     private fun attachTagsIfMissing(dataFile: DataFile, tags: List<Tag>) {
         val fileId = dataFile.id ?: return
