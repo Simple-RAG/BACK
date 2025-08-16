@@ -7,7 +7,7 @@ import jakarta.persistence.*
     name = "tags",
     uniqueConstraints = [UniqueConstraint(columnNames = ["name"])]
 )
-data class Tag(
+class Tag(
 
     @Column(nullable = false, length = 60)
     val name: String,

@@ -8,7 +8,7 @@ import java.time.LocalDateTime
     name = "data_file",
     uniqueConstraints = [UniqueConstraint(columnNames = ["sha256"])]
 )
-data class DataFile(
+class DataFile(
 
     @Column(nullable = false, length = 255)
     val title: String,
