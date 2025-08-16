@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class SwaggerConfig {
     @Bean
-    fun SimpleRAG(): OpenAPI {
+    fun openAPI(): OpenAPI {
         val info = Info().title("SimpleRAG API").description("SimpleRAG API 명세").version("0.0.1")
 
         val jwtSchemeName = "JWT TOKEN"
