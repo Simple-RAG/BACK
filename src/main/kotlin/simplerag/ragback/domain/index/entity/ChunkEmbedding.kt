@@ -13,7 +13,7 @@ class ChunkEmbedding(
     val content: String,
 
     @Convert(converter = FloatArrayToPgVectorStringConverter::class)
-    @Column(name = "embedding", nullable = false, columnDefinition = "vector(1536)") // 차원 수에 맞추세요
+    @Column(name = "embedding", nullable = false)
     var embedding: FloatArray,
 
     @ManyToOne(fetch = FetchType.LAZY)
