@@ -12,15 +12,15 @@ class Model(
     @Column(name = "name", nullable = false, unique = true, length = 100)
     val name: String,
 
-    @Column(name = "llm_model", nullable = false, unique = true)
+    @Column(name = "llm_model", nullable = false)
     val llmModel: String,
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "indexes_id", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "indexes_id")
     val index: Index,
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prompts_id", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prompts_id")
     val prompt: Prompt,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
