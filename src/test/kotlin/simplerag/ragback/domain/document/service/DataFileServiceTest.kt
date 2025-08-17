@@ -2,6 +2,7 @@ package simplerag.ragback.domain.document.service
 
 import jakarta.annotation.PostConstruct
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,11 +41,12 @@ class DataFileServiceTest(
 
     private fun txTemplate() = TransactionTemplate(txManager)
 
-    @PostConstruct
+    @BeforeEach
     fun clean() {
         dataFileTagRepository.deleteAll()
         tagRepository.deleteAll()
         dataFileRepository.deleteAll()
+        s3Util.clear()
     }
 
     @Test
@@ -249,13 +251,13 @@ class DataFileServiceTest(
         val dataFiles = dataFileService.getDataFiles(cursor, take)
 
         // then
-        val dataFileDetailResponse = dataFiles.dataFilePreviewResponseList[0]
+        val dataFileDetailResponse = dataFiles.dataFileDetailResponseList[0]
         assertEquals(dataFileDetailResponse.title, "exists")
         assertEquals(dataFileDetailResponse.type, "text/plain")
         assertEquals(dataFileDetailResponse.sizeMB, 0.0)
         assertEquals(dataFileDetailResponse.sha256, sha1)
 
-        val dataFileDetailResponse2 = dataFiles.dataFilePreviewResponseList[1]
+        val dataFileDetailResponse2 = dataFiles.dataFileDetailResponseList[1]
         assertEquals(dataFileDetailResponse2.title, "exists2")
         assertEquals(dataFileDetailResponse2.type, "text/pdf")
         assertEquals(dataFileDetailResponse2.sizeMB, 0.0)
