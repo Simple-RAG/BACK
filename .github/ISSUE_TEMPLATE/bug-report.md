@@ -1,7 +1,7 @@
 ---
 name: "🐛 Bug Report"
 about: 버그나 오류 제보
-title: "[Bug] "
+title: "🐛 [Bug] "
 labels: bug
 assignees: ''
 ---
