@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(
-    name = "data_file",
+    name = "data_files",
     uniqueConstraints = [UniqueConstraint(columnNames = ["sha256"])]
 )
 class DataFile(
@@ -27,6 +27,6 @@ class DataFile(
     val fileUrl: String,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "data_file_id")
+    @Column(name = "data_files_id")
     val id: Long? = null,
 ) : BaseEntity()

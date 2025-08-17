@@ -6,7 +6,7 @@ import simplerag.ragback.global.entity.BaseEntity
 @Entity
 @Table(
     name = "data_files_tags",
-    uniqueConstraints = [UniqueConstraint(columnNames = ["data_file_id", "tag_id"])]
+    uniqueConstraints = [UniqueConstraint(columnNames = ["data_files_id", "tags_id"])]
 )
 class DataFileTag(
 

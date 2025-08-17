@@ -5,7 +5,7 @@ import simplerag.ragback.domain.document.entity.DataFile
 import simplerag.ragback.global.entity.BaseEntity
 
 @Entity
-@Table(name = "data_file_indexes")
+@Table(name = "data_files_indexes")
 class DataFileIndex(
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -17,6 +17,6 @@ class DataFileIndex(
     val index: Index,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "data_file_indexes_id")
+    @Column(name = "data_files_indexes_id")
     val id: Long? = null,
 ): BaseEntity()
