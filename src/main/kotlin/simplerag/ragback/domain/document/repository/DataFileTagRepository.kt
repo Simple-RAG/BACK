@@ -17,4 +17,6 @@ interface DataFileTagRepository : JpaRepository<DataFileTag, Long> {
         WHERE dft.dataFile = :dataFile
     """)
     fun findTagsByDataFile(@Param("dataFile") dataFile: DataFile): List<Tag>
+
+    fun deleteAllByDataFile(dataFile: DataFile)
 }

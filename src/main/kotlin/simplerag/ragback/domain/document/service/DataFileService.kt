@@ -98,6 +98,18 @@ class DataFileService(
         return DataFileDetailResponseList(dataFileList, nextCursor, dataSlice.hasNext())
     }
 
+    @Transactional
+    fun deleteFile(dataFilesId: Long) {
+        val dataFile = dataFileRepository.findDataFileById(dataFilesId) ?: throw FileException(
+            ErrorCode.NOT_FOUND,
+            dataFilesId.toString()
+        )
+
+        dataFileTagRepository.deleteAllByDataFile(dataFile)
+
+        dataFileRepository.delete(dataFile)
+    }
+
     private fun registerRollbackCleanup(uploadedUrls: MutableList<String>) {
         if (TransactionSynchronizationManager.isSynchronizationActive()) {
             TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {

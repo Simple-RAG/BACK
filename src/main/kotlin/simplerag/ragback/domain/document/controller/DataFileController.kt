@@ -51,4 +51,12 @@ class DataFileController(
         return ApiResponse.ok(data)
     }
 
+    @DeleteMapping("/{dataFilesId}")
+    fun deleteFile(
+        @PathVariable dataFilesId: Long,
+    ): ApiResponse<Unit> {
+        dataFileService.deleteFile(dataFilesId)
+        return ApiResponse.ok(null, "데이터 삭제 완료")
+    }
+
 }
