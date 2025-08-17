@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import simplerag.ragback.global.entity.BaseEntity
 import simplerag.ragback.global.util.FloatArrayToPgVectorStringConverter
 
+// 임베딩 크기를 서비스단에서 검증을 해줘야함
 @Entity
 @Table(name = "chunk_embeddings")
 class ChunkEmbedding(
@@ -14,7 +15,10 @@ class ChunkEmbedding(
 
     @Convert(converter = FloatArrayToPgVectorStringConverter::class)
     @Column(name = "embedding", nullable = false)
-    var _embedding: FloatArray,
+    private var _embedding: FloatArray,
+
+    @Column(name = "embedding_dim", nullable = false)
+    val embeddingDim: Int,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "indexes_id", nullable = false)
@@ -25,31 +29,14 @@ class ChunkEmbedding(
     val id: Long? = null,
 ): BaseEntity() {
 
+    @get:Transient
     val embedding: FloatArray get() = _embedding.copyOf()
 
-    init {
-        verifyDimAndValues(index.embeddingModel.dim, _embedding)
-    }
-
     fun updateEmbedding(newVec: FloatArray) {
-        verifyDimAndValues(index.embeddingModel.dim, newVec)
+        require(newVec.size == embeddingDim) {
+            "Embedding dimension mismatch: expected=$embeddingDim, got=${newVec.size}"
+        }
         _embedding = newVec.copyOf()
-    }
-
-    @PrePersist
-    @PreUpdate
-    fun verifyBeforeSave() {
-        verifyDimAndValues(index.embeddingModel.dim, _embedding)
-    }
-
-    private fun verifyDimAndValues(expected: Int, vec: FloatArray) {
-        require(vec.isNotEmpty()) { "Embedding must not be empty" }
-        require(vec.size == expected) {
-            "Embedding dimension must be $expected but was ${vec.size}"
-        }
-        require(vec.all { it.isFinite() }) {
-            "Embedding must not contain NaN/Infinity"
-        }
     }
 
 }

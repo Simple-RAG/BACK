@@ -22,6 +22,11 @@ class FloatArrayToPgVectorStringConverter : AttributeConverter<FloatArray, Strin
             body.split(',')
                 .map { it.trim().toFloat() }
                 .toFloatArray()
+                .also { arr ->
+                    require(arr.all { it.isFinite() }) {
+                        "Embedding must not contain NaN/Infinity (db → entity)"
+                    }
+                }
         } catch (e: NumberFormatException) {
             throw IllegalArgumentException("Invalid vector literal for pgvector: '$dbData'", e)
         }
