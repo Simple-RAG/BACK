@@ -8,7 +8,8 @@ import simplerag.ragback.global.util.FloatArrayToPgVectorStringConverter
 @Table(name = "chunk_embeddings")
 class ChunkEmbedding(
 
-    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "content", nullable = false)
+    @Lob
     val content: String,
 
     @Convert(converter = FloatArrayToPgVectorStringConverter::class)
