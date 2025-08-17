@@ -1,6 +1,7 @@
 package simplerag.ragback.domain.document.entity
 
 import jakarta.persistence.*
+import simplerag.ragback.global.entity.BaseEntity
 
 @Entity
 @Table(
@@ -13,5 +14,6 @@ class Tag(
     val name: String,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tags_id")
     val id: Long? = null,
-)
+): BaseEntity()

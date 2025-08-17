@@ -1,11 +1,12 @@
 package simplerag.ragback.domain.document.entity
 
 import jakarta.persistence.*
+import simplerag.ragback.global.entity.BaseEntity
 import java.time.LocalDateTime
 
 @Entity
 @Table(
-    name = "data_file",
+    name = "data_files",
     uniqueConstraints = [UniqueConstraint(columnNames = ["sha256"])]
 )
 class DataFile(
@@ -22,15 +23,10 @@ class DataFile(
     @Column(nullable = false, length = 64)
     val sha256: String,
 
-    @Column(nullable = false, length = 2048)
+    @Column(nullable = false, length = 2048, name = "file_url")
     val fileUrl: String,
 
-    @Column(nullable = false)
-    val updatedAt: LocalDateTime,
-
-    @Column(nullable = false)
-    val createdAt: LocalDateTime,
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "data_files_id")
     val id: Long? = null,
-)
+) : BaseEntity()
