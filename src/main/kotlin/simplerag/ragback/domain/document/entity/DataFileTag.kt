@@ -1,6 +1,7 @@
 package simplerag.ragback.domain.document.entity
 
 import jakarta.persistence.*
+import simplerag.ragback.global.entity.BaseEntity
 
 @Entity
 @Table(
@@ -18,5 +19,6 @@ class DataFileTag(
     var dataFile: DataFile,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "data_file_tag_id")
     val id: Long? = null,
-)
+): BaseEntity()

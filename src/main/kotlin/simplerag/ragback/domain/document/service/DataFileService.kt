@@ -42,7 +42,6 @@ class DataFileService(
             throw CustomException(ErrorCode.INVALID_INPUT)
         }
 
-        val now = LocalDateTime.now()
         val uploadedUrls = mutableListOf<String>()
 
         registerRollbackCleanup(uploadedUrls)
@@ -63,7 +62,7 @@ class DataFileService(
             uploadedUrls += fileUrl
 
             val dataFile = try {
-                dataFileRepository.save(DataFile(meta.title, type, sizeBytes, sha256, fileUrl, now, now))
+                dataFileRepository.save(DataFile(meta.title, type, sizeBytes, sha256, fileUrl))
             } catch (ex: DataIntegrityViolationException) {
                 throw FileException(ErrorCode.ALREADY_FILE, sha256)
             }

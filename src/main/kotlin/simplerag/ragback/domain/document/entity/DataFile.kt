@@ -1,6 +1,7 @@
 package simplerag.ragback.domain.document.entity
 
 import jakarta.persistence.*
+import simplerag.ragback.global.entity.BaseEntity
 import java.time.LocalDateTime
 
 @Entity
@@ -25,12 +26,7 @@ class DataFile(
     @Column(nullable = false, length = 2048)
     val fileUrl: String,
 
-    @Column(nullable = false)
-    val updatedAt: LocalDateTime,
-
-    @Column(nullable = false)
-    val createdAt: LocalDateTime,
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "data_file_id")
     val id: Long? = null,
-)
+) : BaseEntity()

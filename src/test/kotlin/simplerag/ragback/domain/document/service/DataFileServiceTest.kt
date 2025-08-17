@@ -94,7 +94,6 @@ class DataFileServiceTest(
         // given
         val bytes = "same".toByteArray()
         val sha = sha256Hex(bytes)
-        val now = LocalDateTime.now()
         dataFileRepository.save(
             DataFile(
                 title = "exists",
@@ -102,8 +101,6 @@ class DataFileServiceTest(
                 sizeBytes = 0,
                 sha256 = sha,
                 fileUrl = "fake://original/exists.txt",
-                updatedAt = now,
-                createdAt = now
             )
         )
         val req = DataFileBulkCreateRequest(listOf(DataFileCreateItem("dup", listOf("tag"))))
