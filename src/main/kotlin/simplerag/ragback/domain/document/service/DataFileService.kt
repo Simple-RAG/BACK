@@ -95,11 +95,7 @@ class DataFileService(
             dataFileList.add(DataFileDetailResponse.of(dataFile, tagDtos))
         }
 
-        var nextCursor: Long? = null;
-        if (dataFileList.isNotEmpty()) {
-            nextCursor = dataFileList[dataFileList.size - 1].id
-        }
-
+        val nextCursor: Long? = dataFileList.lastOrNull()?.id
         return DataFileDetailResponseList(dataFileList, nextCursor, dataSlice.hasNext())
     }
 
