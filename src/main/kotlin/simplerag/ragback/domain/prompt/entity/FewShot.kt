@@ -10,10 +10,12 @@ class FewShot(
     @Column(name = "question", nullable = false, length = 255)
     val question: String,
 
-    @Column(name = "answer", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "answer", nullable = false)
+    @Lob
     val answer: String,
 
-    @Column(name = "evidence", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "evidence", nullable = false)
+    @Lob
     val evidence: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
