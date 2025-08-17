@@ -23,6 +23,7 @@ data class DataFileDetailResponse(
     val title: String,
     val type: String,
     val lastModified: LocalDateTime,
+    val sizeMB: Double,
     val tags: List<TagDTO>,
     val sha256: String,
 ) {
@@ -33,6 +34,7 @@ data class DataFileDetailResponse(
                 dataFile.title,
                 dataFile.type,
                 dataFile.updatedAt,
+                dataFile.sizeBytes / (1024.0 * 1024.0),
                 tags,
                 dataFile.sha256,
             )
