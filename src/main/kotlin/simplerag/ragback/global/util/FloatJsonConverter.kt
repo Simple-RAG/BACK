@@ -6,16 +6,11 @@ import jakarta.persistence.Converter
 @Converter(autoApply = false)
 class FloatArrayToPgVectorStringConverter : AttributeConverter<FloatArray, String> {
     override fun convertToDatabaseColumn(attribute: FloatArray?): String {
-        if (attribute == null) return "[]"
-        return buildString {
-            append('[')
-            attribute.forEachIndexed { i, v ->
-                if (i > 0) append(',')
-                append(v.toString())
-            }
-            append(']')
-        }
+        requireNotNull(attribute) { "Embedding (FloatArray) must not be null" }
+        require(attribute.isNotEmpty()) { "Embedding must not be empty; expected fixed dimension (e.g., 1536)" }
+        return attribute.joinToString(prefix = "[", postfix = "]", separator = ",") { it.toString() }
     }
+
     override fun convertToEntityAttribute(dbData: String?): FloatArray {
         if (dbData.isNullOrBlank()) return floatArrayOf()
         val body = dbData.trim().removePrefix("[").removeSuffix("]")
