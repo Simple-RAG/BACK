@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import simplerag.ragback.domain.document.dto.DataFileBulkCreateRequest
+import simplerag.ragback.domain.document.dto.DataFileDetailResponseList
 import simplerag.ragback.domain.document.dto.DataFileResponseList
 import simplerag.ragback.domain.document.service.DataFileService
 import simplerag.ragback.global.response.ApiResponse
@@ -39,6 +40,15 @@ class DataFileController(
     ): ApiResponse<DataFileResponseList> {
         val saved = dataFileService.upload(files, req)
         return ApiResponse.ok(saved, "업로드 완료")
+    }
+
+    @GetMapping
+    fun getDataFiles(
+        @RequestParam(name = "cursor") cursor: Long,
+        @RequestParam(name = "take") take: Int,
+    ): ApiResponse<DataFileDetailResponseList> {
+        val data = dataFileService.getDataFiles(cursor, take)
+        return ApiResponse.ok(data)
     }
 
 }
