@@ -16,11 +16,11 @@ class Model(
     val llmModel: String,
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "indexes_id", nullable = false)
+    @JoinColumn(name = "indexes_id", nullable = false, unique = true)
     val index: Index,
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prompts_id", nullable = false)
+    @JoinColumn(name = "prompts_id", nullable = false, unique = true)
     val prompt: Prompt,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
