@@ -84,9 +84,13 @@ class DataFileService(
 
         val dataFileList: MutableList<DataFileDetailResponse> = ArrayList()
         dataSlice.forEach{ dataFile ->
-            val tags: List<Tag> = dataFileTagRepository.findTagsByDataFile(dataFile)
+            val dataFileTags: List<DataFileTag> = dataFileTagRepository.findTagsByDataFile(dataFile)
 
-            val tagDtos: List<TagDTO> = tags.map{tag -> TagDTO(tag.id, tag.name)}
+            val tagDtos: List<TagDTO> = dataFileTags.map{
+                dataFileTag ->
+                val tag = dataFileTag.tag
+                TagDTO(tag.id, tag.name)
+            }
 
             dataFileList.add(DataFileDetailResponse.of(dataFile, tagDtos))
         }
