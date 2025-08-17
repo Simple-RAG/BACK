@@ -5,7 +5,6 @@ enum class EmbeddingModel(
     val modelId: String
 ) {
     // OpenAI
-    TEXT_EMBEDDING_ADA_002(1536, "text-embedding-ada-002"),
     TEXT_EMBEDDING_3_SMALL(1536, "text-embedding-3-small"),
     TEXT_EMBEDDING_3_LARGE(3072, "text-embedding-3-large"),
 
@@ -13,21 +12,18 @@ enum class EmbeddingModel(
     ALL_MINILM_L6_V2(384, "sentence-transformers/all-MiniLM-L6-v2"),
     ALL_MP_NET_BASE_V2(768, "sentence-transformers/all-mpnet-base-v2"),
     MULTI_QA_MP_NET_BASE_DOT_V1(768, "sentence-transformers/multi-qa-mpnet-base-dot-v1"),
-    DISTILUSE_BASE_MULTILINGUAL_CASED_V2(512, "sentence-transformers/distiluse-base-multilingual-cased"),
+    DISTILUSE_BASE_MULTILINGUAL_CASED_V2(512, "sentence-transformers/distiluse-base-multilingual-cased-v2"),
     PARAPHRASE_MULTILINGUAL_MINILM_L12_V2(384, "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"),
     KO_SBERT_V1(768, "jhgan/ko-sbert-v1"),
     KOR_SROBERTA(768, "jhgan/ko-sroberta-medium-nli"),
 
     // Korean specific
-    KPF_BERT_KOREAN(768, "kpfbert/kpfbert-base-korean"),
-    KOCSEBERT(768, "BM-K/KoCSE-BERT"),
     BM_KO_SMALL(512, "bespin-global/klue-sroberta-base-continue-learning-by-mnr"),
-    BM_KO_LARGE(1024, "bespin-global/klue-roberta-large-continue-learning-by-mnr"),
 
     // Instructor / Mistral
     INSTRUCTOR_BASE(768, "hkunlp/instructor-base"),
     INSTRUCTOR_XL(1024, "hkunlp/instructor-xl"),
-    MISTRAL_EMBED(4096, "mistral-embed"),
+    MISTRAL_EMBED(1024, "mistral-embed"),
 
     // BGE / E5 etc
     BGE_SMALL_EN(384, "BAAI/bge-small-en-v1.5"),
