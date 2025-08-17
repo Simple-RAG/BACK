@@ -15,7 +15,8 @@ class Prompt(
     @Column(name = "pre_set", nullable = false)
     val preSet: PreSet,
 
-    @Column(name = "system_prompt", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "system_prompt", nullable = false)
+    @Lob
     val systemPrompt: String,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
