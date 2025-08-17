@@ -2,6 +2,7 @@ package simplerag.ragback.domain.index.entity
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.Min
+import simplerag.ragback.domain.index.entity.enums.EmbeddingModel
 import simplerag.ragback.domain.index.entity.enums.SimilarityMetric
 import simplerag.ragback.global.entity.BaseEntity
 
@@ -29,7 +30,8 @@ class Index(
     val topK: Int,
 
     @Column(name = "embedding_model", nullable = false, length = 255)
-    val embeddingModel: String,
+    @Enumerated(EnumType.STRING)
+    val embeddingModel: EmbeddingModel,
 
     @Column(name = "reranker", nullable = false)
     val reranker: Boolean,

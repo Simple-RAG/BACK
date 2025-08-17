@@ -14,7 +14,7 @@ class ChunkEmbedding(
 
     @Convert(converter = FloatArrayToPgVectorStringConverter::class)
     @Column(name = "embedding", nullable = false)
-    var embedding: FloatArray,
+    var _embedding: FloatArray,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "indexes_id", nullable = false)
@@ -23,4 +23,33 @@ class ChunkEmbedding(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chunk_embeddings_id")
     val id: Long? = null,
-): BaseEntity()
+): BaseEntity() {
+
+    val embedding: FloatArray get() = _embedding.copyOf()
+
+    init {
+        verifyDimAndValues(index.embeddingModel.dim, _embedding)
+    }
+
+    fun updateEmbedding(newVec: FloatArray) {
+        verifyDimAndValues(index.embeddingModel.dim, newVec)
+        _embedding = newVec.copyOf()
+    }
+
+    @PrePersist
+    @PreUpdate
+    fun verifyBeforeSave() {
+        verifyDimAndValues(index.embeddingModel.dim, _embedding)
+    }
+
+    private fun verifyDimAndValues(expected: Int, vec: FloatArray) {
+        require(vec.isNotEmpty()) { "Embedding must not be empty" }
+        require(vec.size == expected) {
+            "Embedding dimension must be $expected but was ${vec.size}"
+        }
+        require(vec.all { it.isFinite() }) {
+            "Embedding must not contain NaN/Infinity"
+        }
+    }
+
+}
