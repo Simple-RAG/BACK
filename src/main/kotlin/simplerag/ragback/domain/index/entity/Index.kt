@@ -21,6 +21,7 @@ class Index(
     val overlapSize: Int,
 
     @Column(name = "similarity_metric", nullable = false)
+    @Enumerated(EnumType.STRING)
     val similarityMetric: SimilarityMetric,
 
     @Column(name = "top_k", nullable = false)
