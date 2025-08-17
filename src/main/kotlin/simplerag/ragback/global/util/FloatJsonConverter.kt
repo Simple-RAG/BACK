@@ -13,8 +13,14 @@ class FloatArrayToPgVectorStringConverter : AttributeConverter<FloatArray, Strin
 
     override fun convertToEntityAttribute(dbData: String?): FloatArray {
         if (dbData.isNullOrBlank()) return floatArrayOf()
-        val body = dbData.trim().removePrefix("[").removeSuffix("]")
+        val body = dbData.trim().removePrefix("[").removeSuffix("]").trim()
         if (body.isBlank()) return floatArrayOf()
-        return body.split(',').map { it.trim().toFloat() }.toFloatArray()
+        return try {
+            body.split(',')
+                .map { it.trim().toFloat() }
+                .toFloatArray()
+        } catch (e: NumberFormatException) {
+            throw IllegalArgumentException("Invalid vector literal for pgvector: '$dbData'", e)
+        }
     }
 }
