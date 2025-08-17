@@ -13,7 +13,7 @@ data class DataFilePreviewResponse(
 )
 
 data class DataFileDetailResponseList(
-    val dataFilePreviewResponseList: List<DataFileDetailResponse>,
+    val dataFileDetailResponseList: List<DataFileDetailResponse>,
     val cursor: Long?,
     val hasNext: Boolean,
 )
