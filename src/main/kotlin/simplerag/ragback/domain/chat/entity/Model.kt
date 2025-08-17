@@ -15,11 +15,11 @@ class Model(
     @Column(name = "llm_model", nullable = false, unique = true)
     val llmModel: String,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "indexes_id", nullable = false)
     val index: Index,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prompts_id", nullable = false)
     val prompt: Prompt,
 
