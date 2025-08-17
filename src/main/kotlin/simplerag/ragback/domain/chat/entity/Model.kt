@@ -1,0 +1,27 @@
+package simplerag.ragback.domain.chat.entity
+
+import jakarta.persistence.*
+import simplerag.ragback.domain.prompt.entity.Prompt
+import simplerag.ragback.global.entity.BaseEntity
+
+@Entity
+@Table(name = "model")
+class Model(
+
+    @Column(name = "name", nullable = false, unique = true, length = 100)
+    val name: String,
+
+    @Column(name = "llm_model", nullable = false, unique = true)
+    val llmModel: String,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "indexes_id", nullable = false)
+    val index: Index,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prompt_id", nullable = false)
+    val prompt: Prompt,
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+): BaseEntity()
