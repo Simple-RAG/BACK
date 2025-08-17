@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import simplerag.ragback.global.entity.BaseEntity
 
 @Entity
-@Table(name = "chunk_embedding")
+@Table(name = "chunk_embeddings")
 class ChunkEmbedding(
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
@@ -14,10 +14,10 @@ class ChunkEmbedding(
     val embedding: FloatArray,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "indexes_id")
+    @JoinColumn(name = "indexes_id", nullable = false)
     val index: Index,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chunk_embedding_id")
+    @Column(name = "chunk_embeddings_id")
     val id: Long? = null,
 ): BaseEntity()

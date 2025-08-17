@@ -30,5 +30,6 @@ class Index(
     val reranker: Boolean,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "indexes_id", nullable = false)
     val id: Long? = null,
 ): BaseEntity()

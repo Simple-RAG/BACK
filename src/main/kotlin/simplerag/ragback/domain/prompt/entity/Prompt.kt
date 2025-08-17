@@ -5,7 +5,7 @@ import simplerag.ragback.domain.prompt.entity.enums.PreSet
 import simplerag.ragback.global.entity.BaseEntity
 
 @Entity
-@Table(name = "prompt")
+@Table(name = "prompts")
 class Prompt(
 
     @Column(name = "name", length = 100, nullable = false)
@@ -19,6 +19,6 @@ class Prompt(
     val systemPrompt: String,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "prompt_id")
+    @Column(name = "prompts_id")
     val id: Long? = null,
 ): BaseEntity()

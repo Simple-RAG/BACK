@@ -6,7 +6,7 @@ import simplerag.ragback.domain.prompt.entity.Prompt
 import simplerag.ragback.global.entity.BaseEntity
 
 @Entity
-@Table(name = "model")
+@Table(name = "models")
 class Model(
 
     @Column(name = "name", nullable = false, unique = true, length = 100)
@@ -20,9 +20,10 @@ class Model(
     val index: Index,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prompt_id", nullable = false)
+    @JoinColumn(name = "prompts_id", nullable = false)
     val prompt: Prompt,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "models_id")
     val id: Long? = null,
 ): BaseEntity()

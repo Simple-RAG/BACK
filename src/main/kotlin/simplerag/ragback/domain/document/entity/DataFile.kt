@@ -23,7 +23,7 @@ class DataFile(
     @Column(nullable = false, length = 64)
     val sha256: String,
 
-    @Column(nullable = false, length = 2048)
+    @Column(nullable = false, length = 2048, name = "file_url")
     val fileUrl: String,
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
