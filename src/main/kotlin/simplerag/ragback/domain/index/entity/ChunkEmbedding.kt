@@ -28,10 +28,6 @@ class ChunkEmbedding(
     @get:Transient
     val embedding: FloatArray get() = _embedding.copyOf()
 
-    init {
-        verifyDimAndValues(index.embeddingModel.dim, _embedding)
-    }
-
     fun updateEmbedding(newVec: FloatArray) {
         verifyDimAndValues(index.embeddingModel.dim, newVec)
         _embedding = newVec.copyOf()
