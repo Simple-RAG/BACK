@@ -14,7 +14,7 @@ class ChunkEmbedding(
 
     @Convert(converter = FloatArrayToPgVectorStringConverter::class)
     @Column(name = "embedding", nullable = false)
-    var _embedding: FloatArray,
+    private var _embedding: FloatArray,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "indexes_id", nullable = false)
@@ -25,6 +25,7 @@ class ChunkEmbedding(
     val id: Long? = null,
 ): BaseEntity() {
 
+    @get:Transient
     val embedding: FloatArray get() = _embedding.copyOf()
 
     init {
