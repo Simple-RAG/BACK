@@ -1,14 +1,14 @@
 package simplerag.ragback.domain.document.service
 
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionSynchronization
 import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.web.multipart.MultipartFile
-import simplerag.ragback.domain.document.dto.DataFileBulkCreateRequest
-import simplerag.ragback.domain.document.dto.DataFilePreviewResponse
-import simplerag.ragback.domain.document.dto.DataFileResponseList
+import simplerag.ragback.domain.document.dto.*
 import simplerag.ragback.domain.document.entity.DataFile
 import simplerag.ragback.domain.document.entity.DataFileTag
 import simplerag.ragback.domain.document.entity.Tag
@@ -24,6 +24,7 @@ import simplerag.ragback.global.util.computeMetricsStreaming
 import simplerag.ragback.global.util.resolveContentType
 import java.time.LocalDateTime
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Service
 class DataFileService(
@@ -74,6 +75,28 @@ class DataFileService(
         }
 
         return DataFileResponseList(responses)
+    }
+
+    @Transactional(readOnly = true)
+    fun getDataFiles(cursor: Long, take: Int): DataFileDetailResponseList {
+
+        val dataSlice = dataFileRepository.findByIdGreaterThanOrderById(cursor, PageRequest.of(0, take))
+
+        val dataFileList: MutableList<DataFileDetailResponse> = ArrayList()
+        dataSlice.forEach{ dataFile ->
+            val dataFileTags: List<DataFileTag> = dataFileTagRepository.findTagsByDataFile(dataFile)
+
+            val tagDtos: List<TagDTO> = dataFileTags.map{
+                dataFileTag ->
+                val tag = dataFileTag.tag
+                TagDTO(tag.id, tag.name)
+            }
+
+            dataFileList.add(DataFileDetailResponse.of(dataFile, tagDtos))
+        }
+
+        val nextCursor: Long? = dataFileList.lastOrNull()?.id
+        return DataFileDetailResponseList(dataFileList, nextCursor, dataSlice.hasNext())
     }
 
     private fun registerRollbackCleanup(uploadedUrls: MutableList<String>) {

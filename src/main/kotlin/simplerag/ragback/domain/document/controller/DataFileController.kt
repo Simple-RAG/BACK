@@ -3,6 +3,8 @@ package simplerag.ragback.domain.document.controller
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.Size
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -10,6 +12,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import simplerag.ragback.domain.document.dto.DataFileBulkCreateRequest
+import simplerag.ragback.domain.document.dto.DataFileDetailResponseList
 import simplerag.ragback.domain.document.dto.DataFileResponseList
 import simplerag.ragback.domain.document.service.DataFileService
 import simplerag.ragback.global.response.ApiResponse
@@ -39,6 +42,15 @@ class DataFileController(
     ): ApiResponse<DataFileResponseList> {
         val saved = dataFileService.upload(files, req)
         return ApiResponse.ok(saved, "업로드 완료")
+    }
+
+    @GetMapping
+    fun getDataFiles(
+        @RequestParam(name = "cursor") cursor: Long,
+        @RequestParam(name = "take") @Min(1) @Max(100) take: Int,
+    ): ApiResponse<DataFileDetailResponseList> {
+        val data = dataFileService.getDataFiles(cursor, take)
+        return ApiResponse.ok(data)
     }
 
 }

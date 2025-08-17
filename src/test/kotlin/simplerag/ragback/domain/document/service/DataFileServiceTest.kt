@@ -1,6 +1,8 @@
 package simplerag.ragback.domain.document.service
 
+import jakarta.annotation.PostConstruct
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +25,6 @@ import simplerag.ragback.global.storage.FakeS3Util
 import simplerag.ragback.global.util.S3Type
 import simplerag.ragback.global.util.sha256Hex
 import java.security.MessageDigest
-import java.time.LocalDateTime
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -39,6 +40,14 @@ class DataFileServiceTest(
     lateinit var txManager: org.springframework.transaction.PlatformTransactionManager
 
     private fun txTemplate() = TransactionTemplate(txManager)
+
+    @BeforeEach
+    fun clean() {
+        dataFileTagRepository.deleteAll()
+        tagRepository.deleteAll()
+        dataFileRepository.deleteAll()
+        s3Util.clear()
+    }
 
     @Test
     @Transactional
@@ -205,6 +214,57 @@ class DataFileServiceTest(
         assertFalse(existsInDb, "롤백되었으므로 DB에 남으면 안 됩니다")
 
         assertFalse(s3Util.exists(expectedUrl), "롤백 시 S3도 보상 삭제되어야 합니다")
+    }
+
+    @Test
+    @DisplayName("데이터 조회가 잘 된다")
+    @Transactional
+    fun getDataFilesOK() {
+        // given
+        val bytes1 = "test1".toByteArray()
+        val sha1 = sha256Hex(bytes1)
+        val bytes2 = "test2".toByteArray()
+        val sha2 = sha256Hex(bytes2)
+        dataFileRepository.saveAll(
+            listOf(
+                DataFile(
+                title = "exists",
+                type = "text/plain",
+                sizeBytes = 0,
+                sha256 = sha1,
+                fileUrl = "fake://original/exists.txt",
+            ),
+                DataFile(
+                    title = "exists2",
+                    type = "text/pdf",
+                    sizeBytes = 0,
+                    sha256 = sha2,
+                    fileUrl = "fake://original/exists.txt",
+                )
+            )
+        )
+
+        val cursor = 0L
+        val take = 2
+
+        // when
+        val dataFiles = dataFileService.getDataFiles(cursor, take)
+
+        // then
+        val dataFileDetailResponse = dataFiles.dataFileDetailResponseList[0]
+        assertEquals(dataFileDetailResponse.title, "exists")
+        assertEquals(dataFileDetailResponse.type, "text/plain")
+        assertEquals(dataFileDetailResponse.sizeMB, 0.0)
+        assertEquals(dataFileDetailResponse.sha256, sha1)
+
+        val dataFileDetailResponse2 = dataFiles.dataFileDetailResponseList[1]
+        assertEquals(dataFileDetailResponse2.title, "exists2")
+        assertEquals(dataFileDetailResponse2.type, "text/pdf")
+        assertEquals(dataFileDetailResponse2.sizeMB, 0.0)
+        assertEquals(dataFileDetailResponse2.sha256, sha2)
+
+        assertEquals(dataFiles.cursor, dataFileDetailResponse2.id)
+        assertEquals(dataFiles.hasNext, false)
     }
 
     // -----------------------
