@@ -8,6 +8,9 @@ class FloatArrayToPgVectorStringConverter : AttributeConverter<FloatArray, Strin
     override fun convertToDatabaseColumn(attribute: FloatArray?): String {
         requireNotNull(attribute) { "Embedding (FloatArray) must not be null" }
         require(attribute.isNotEmpty()) { "Embedding must not be empty; expected fixed dimension (e.g., 1536)" }
+        require(attribute.all { !it.isNaN() && !it.isInfinite() }) {
+            "Embedding must not contain NaN/Infinity"
+        }
         return attribute.joinToString(prefix = "[", postfix = "]", separator = ",") { it.toString() }
     }
 
