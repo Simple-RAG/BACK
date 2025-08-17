@@ -79,7 +79,8 @@ class DataFileService(
 
     @Transactional(readOnly = true)
     fun getDataFiles(cursor: Long, take: Int): DataFileDetailResponseList {
-        val dataSlice = dataFileRepository.findByOrderById(PageRequest.of(cursor.toInt(), take))
+
+        val dataSlice = dataFileRepository.findByIdGreaterThanOrderById(cursor, PageRequest.of(0, take))
 
         val dataFileList: MutableList<DataFileDetailResponse> = ArrayList()
         dataSlice.forEach{ dataFile ->
