@@ -1,6 +1,7 @@
 package simplerag.ragback.domain.chat.entity
 
 import jakarta.persistence.*
+import simplerag.ragback.domain.index.entity.Index
 import simplerag.ragback.domain.prompt.entity.Prompt
 import simplerag.ragback.global.entity.BaseEntity
 
