@@ -3,6 +3,8 @@ package simplerag.ragback.domain.document.controller
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.Size
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -45,7 +47,7 @@ class DataFileController(
     @GetMapping
     fun getDataFiles(
         @RequestParam(name = "cursor") cursor: Long,
-        @RequestParam(name = "take") take: Int,
+        @RequestParam(name = "take") @Min(1) @Max(100) take: Int,
     ): ApiResponse<DataFileDetailResponseList> {
         val data = dataFileService.getDataFiles(cursor, take)
         return ApiResponse.ok(data)

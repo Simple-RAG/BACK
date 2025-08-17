@@ -5,18 +5,17 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import simplerag.ragback.domain.document.entity.DataFile
 import simplerag.ragback.domain.document.entity.DataFileTag
-import simplerag.ragback.domain.document.entity.Tag
 
 interface DataFileTagRepository : JpaRepository<DataFileTag, Long> {
     fun existsByDataFileIdAndTagId(dataFileId: Long, tagId: Long): Boolean
 
     @Query("""
-        SELECT DISTINCT t
+        SELECT dft
         FROM DataFileTag dft
-        JOIN dft.tag t
+        JOIN FETCH dft.tag t
         WHERE dft.dataFile = :dataFile
     """)
-    fun findTagsByDataFile(@Param("dataFile") dataFile: DataFile): List<Tag>
+    fun findTagsByDataFile(@Param("dataFile") dataFile: DataFile): List<DataFileTag>
 
     fun deleteAllByDataFile(dataFile: DataFile)
 }

@@ -8,7 +8,7 @@ import simplerag.ragback.domain.document.entity.DataFile
 interface DataFileRepository : JpaRepository<DataFile, Long> {
     fun existsBySha256(sha256: String): Boolean
 
-    fun findByOrderById(pageable: Pageable): Slice<DataFile>
+    fun findByIdGreaterThanOrderById(cursorId: Long, pageable: Pageable): Slice<DataFile>
 
     fun findDataFileById(dataFileId: Long): DataFile?
 }

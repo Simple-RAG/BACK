@@ -50,4 +50,5 @@ class FakeS3Util : S3Util {
     // 테스트 용 함수
     fun exists(url: String): Boolean = keyFromUrl(url)?.let { store.containsKey(it) } == true
     fun count(): Int = store.size
+    fun clear() = store.clear()
 }
