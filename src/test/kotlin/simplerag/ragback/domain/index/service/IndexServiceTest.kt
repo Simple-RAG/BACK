@@ -9,7 +9,6 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.transaction.annotation.Transactional
 import simplerag.ragback.domain.index.dto.IndexCreateRequest
 import simplerag.ragback.domain.index.dto.IndexUpdateRequest
 import simplerag.ragback.domain.index.entity.Index
