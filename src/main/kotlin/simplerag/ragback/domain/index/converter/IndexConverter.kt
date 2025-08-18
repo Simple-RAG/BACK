@@ -6,7 +6,7 @@ import simplerag.ragback.domain.index.entity.Index
 
 fun toIndex(createRequest: IndexCreateRequest): Index {
     return Index(
-        snapshotName = createRequest.snapshotName,
+        snapshotName = createRequest.snapshotName.trim(),
         overlapSize = createRequest.overlapSize,
         chunkingSize = createRequest.chunkingSize,
         similarityMetric = createRequest.similarityMetric,
