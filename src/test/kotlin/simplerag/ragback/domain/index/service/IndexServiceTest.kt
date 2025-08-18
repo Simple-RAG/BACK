@@ -128,7 +128,6 @@ class IndexServiceTest(
 
     @Test
     @DisplayName("인덱스 상세 조회 시 없는 인덱스를 조회하면 에러가 터진다.")
-    @Transactional
     fun getIndexTestWithInvalidIndex() {
         // given
         val savedIndex = indexRepository.save(
