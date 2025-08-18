@@ -37,7 +37,7 @@ class IndexServiceTest (
         val indexCreateRequest = IndexCreateRequest("test", 1, 0, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
 
         // when
-        val createIndexResponse = indexService.createIndex(indexCreateRequest);
+        val createIndexResponse = indexService.createIndex(indexCreateRequest)
 
         // then
         val indices = indexRepository.findAll()
