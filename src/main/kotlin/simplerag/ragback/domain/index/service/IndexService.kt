@@ -53,4 +53,11 @@ class IndexService(
         return toIndexPreviewResponse(index)
     }
 
+    @Transactional
+    fun deleteIndex(indexesId: Long) {
+        val index = indexRepository.findIndexById(indexesId) ?: throw IndexException(ErrorCode.NOT_FOUND)
+
+        indexRepository.delete(index)
+    }
+
 }

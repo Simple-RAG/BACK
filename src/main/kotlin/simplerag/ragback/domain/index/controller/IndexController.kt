@@ -47,4 +47,13 @@ class IndexController(
         return ApiResponse.ok(indexPreviewResponse)
     }
 
+    @DeleteMapping("/{indexesId}")
+    fun deleteIndex(
+        @PathVariable indexesId: Long
+    ): ApiResponse<Unit> {
+        indexService.deleteIndex(indexesId)
+        return ApiResponse.ok(null, "인덱스가 삭제 되었습니다.")
+    }
+
+
 }
