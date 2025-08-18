@@ -21,4 +21,4 @@ class DataFileTag(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "data_files_tags_id")
     val id: Long? = null,
-): BaseEntity()
+) : BaseEntity()

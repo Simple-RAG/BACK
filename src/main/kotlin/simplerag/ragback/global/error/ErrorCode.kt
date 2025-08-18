@@ -21,5 +21,8 @@ enum class ErrorCode(
     S3_INVALID_URL(HttpStatus.BAD_REQUEST, "S3_004", "유효하지 않은 S3 URL 입니다."),
     S3_EMPTY_FILE(HttpStatus.BAD_REQUEST, "S3_005", "빈 파일은 업로드할 수 없습니다."),
     S3_PRESIGN_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "S3_006", "프리사인 URL 발급 실패"),
-    S3_UNSUPPORTED_CONTENT_TYPE(HttpStatus.BAD_REQUEST, "S3_007", "지원하지 않는 Content-Type 입니다.")
+    S3_UNSUPPORTED_CONTENT_TYPE(HttpStatus.BAD_REQUEST, "S3_007", "지원하지 않는 Content-Type 입니다."),
+
+    // index
+    OVERLAP_OVERFLOW(HttpStatus.BAD_REQUEST, "INDEX_001", "overlap 크기는 chunking 크기를 넘을 수 없습니다.")
 }

@@ -2,7 +2,6 @@ package simplerag.ragback.domain.document.service
 
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionSynchronization
@@ -22,9 +21,7 @@ import simplerag.ragback.global.util.S3Type
 import simplerag.ragback.global.util.S3Util
 import simplerag.ragback.global.util.computeMetricsStreaming
 import simplerag.ragback.global.util.resolveContentType
-import java.time.LocalDateTime
 import java.util.*
-import kotlin.collections.ArrayList
 
 @Service
 class DataFileService(
@@ -83,11 +80,10 @@ class DataFileService(
         val dataSlice = dataFileRepository.findByIdGreaterThanOrderById(cursor, PageRequest.of(0, take))
 
         val dataFileList: MutableList<DataFileDetailResponse> = ArrayList()
-        dataSlice.forEach{ dataFile ->
+        dataSlice.forEach { dataFile ->
             val dataFileTags: List<DataFileTag> = dataFileTagRepository.findTagsByDataFile(dataFile)
 
-            val tagDtos: List<TagDTO> = dataFileTags.map{
-                dataFileTag ->
+            val tagDtos: List<TagDTO> = dataFileTags.map { dataFileTag ->
                 val tag = dataFileTag.tag
                 TagDTO(tag.id, tag.name)
             }

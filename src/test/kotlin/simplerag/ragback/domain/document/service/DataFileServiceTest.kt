@@ -1,6 +1,5 @@
 package simplerag.ragback.domain.document.service
 
-import jakarta.annotation.PostConstruct
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -228,12 +227,12 @@ class DataFileServiceTest(
         dataFileRepository.saveAll(
             listOf(
                 DataFile(
-                title = "exists",
-                type = "text/plain",
-                sizeBytes = 0,
-                sha256 = sha1,
-                fileUrl = "fake://original/exists.txt",
-            ),
+                    title = "exists",
+                    type = "text/plain",
+                    sizeBytes = 0,
+                    sha256 = sha1,
+                    fileUrl = "fake://original/exists.txt",
+                ),
                 DataFile(
                     title = "exists2",
                     type = "text/pdf",
