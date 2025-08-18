@@ -4,10 +4,7 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import simplerag.ragback.domain.index.dto.IndexCreateRequest
-import simplerag.ragback.domain.index.dto.IndexDetailResponseList
-import simplerag.ragback.domain.index.dto.IndexPreviewResponse
-import simplerag.ragback.domain.index.dto.IndexUpdateRequest
+import simplerag.ragback.domain.index.dto.*
 import simplerag.ragback.domain.index.service.IndexService
 import simplerag.ragback.global.response.ApiResponse
 
@@ -28,9 +25,17 @@ class IndexController(
     }
 
     @GetMapping
-    fun getIndexes(): ApiResponse<IndexDetailResponseList> {
-        val indexDetailResponseList = indexService.getIndexes()
-        return ApiResponse.ok(indexDetailResponseList)
+    fun getIndexes(): ApiResponse<IndexPreviewResponseList> {
+        val indexPreviewResponseList = indexService.getIndexes()
+        return ApiResponse.ok(indexPreviewResponseList)
+    }
+
+    @GetMapping("/{indexesId}")
+    fun getIndex(
+        @PathVariable indexesId: Long
+    ): ApiResponse<IndexDetailResponse> {
+        val indexDetailResponse = indexService.getIndex(indexesId)
+        return ApiResponse.ok(indexDetailResponse)
     }
 
     @PutMapping("/{indexesId}")

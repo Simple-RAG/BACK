@@ -2,13 +2,8 @@ package simplerag.ragback.domain.index.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import simplerag.ragback.domain.index.converter.toIndex
-import simplerag.ragback.domain.index.converter.toIndexDetailResponseList
-import simplerag.ragback.domain.index.converter.toIndexPreviewResponse
-import simplerag.ragback.domain.index.dto.IndexCreateRequest
-import simplerag.ragback.domain.index.dto.IndexDetailResponseList
-import simplerag.ragback.domain.index.dto.IndexPreviewResponse
-import simplerag.ragback.domain.index.dto.IndexUpdateRequest
+import simplerag.ragback.domain.index.converter.*
+import simplerag.ragback.domain.index.dto.*
 import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.ErrorCode
 import simplerag.ragback.global.error.IndexException
@@ -30,9 +25,16 @@ class IndexService(
     }
 
     @Transactional(readOnly = true)
-    fun getIndexes(): IndexDetailResponseList {
+    fun getIndexes(): IndexPreviewResponseList {
         val indexes = indexRepository.findAllByOrderByCreatedAt()
-        return toIndexDetailResponseList(indexes)
+        return toIndexPreviewResponseList(indexes)
+    }
+
+    @Transactional(readOnly = true)
+    fun getIndex(indexesId: Long): IndexDetailResponse? {
+        val index = indexRepository.findIndexById(indexesId) ?: throw IndexException(ErrorCode.NOT_FOUND)
+
+        return toIndexDetailResponse(index)
     }
 
     @Transactional

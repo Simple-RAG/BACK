@@ -1,9 +1,6 @@
 package simplerag.ragback.domain.index.converter
 
-import simplerag.ragback.domain.index.dto.IndexCreateRequest
-import simplerag.ragback.domain.index.dto.IndexDetailResponse
-import simplerag.ragback.domain.index.dto.IndexDetailResponseList
-import simplerag.ragback.domain.index.dto.IndexPreviewResponse
+import simplerag.ragback.domain.index.dto.*
 import simplerag.ragback.domain.index.entity.Index
 
 
@@ -19,17 +16,18 @@ fun toIndex(createRequest: IndexCreateRequest): Index {
     )
 }
 
-fun toIndexPreviewResponse(index: Index): IndexPreviewResponse {
-    return IndexPreviewResponse(
-        indexesId = index.id
-    )
+fun toIndexPreviewResponseList(
+    indexes: List<Index>
+): IndexPreviewResponseList {
+    val indexList = indexes.map { toIndexPreviewResponse(it) }
+    return IndexPreviewResponseList(indexList)
 }
 
-fun toIndexDetailResponseList(
-    indexes: List<Index>
-): IndexDetailResponseList {
-    val indexList = indexes.map { toIndexDetailResponse(it) }
-    return IndexDetailResponseList(indexList)
+fun toIndexPreviewResponse(index: Index): IndexPreviewResponse {
+    return IndexPreviewResponse(
+        indexesId = index.id,
+        snapshotName = index.snapshotName,
+    )
 }
 
 fun toIndexDetailResponse(index: Index): IndexDetailResponse {
