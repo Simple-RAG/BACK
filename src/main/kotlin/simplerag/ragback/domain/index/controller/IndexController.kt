@@ -43,7 +43,7 @@ class IndexController(
         @PathVariable indexId: Long,
         @RequestBody @Valid indexUpdateRequest: IndexUpdateRequest,
     ): ApiResponse<IndexPreviewResponse> {
-        val indexPreviewResponse = indexService.updateIndexes(indexId, indexUpdateRequest)
+        val indexPreviewResponse = indexService.updateIndex(indexId, indexUpdateRequest)
         return ApiResponse.ok(indexPreviewResponse)
     }
 

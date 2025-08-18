@@ -38,7 +38,7 @@ class IndexService(
     }
 
     @Transactional
-    fun updateIndexes(
+    fun updateIndex(
         indexId: Long,
         indexUpdateRequest: IndexUpdateRequest
     ): IndexPreviewResponse {
