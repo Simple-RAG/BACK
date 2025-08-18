@@ -7,4 +7,5 @@ interface IndexRepository: JpaRepository<Index, Long> {
 
     fun findAllByOrderByCreatedAt(): List<Index>
 
+    fun findIndexById(indexesId: Long): Index?
 }

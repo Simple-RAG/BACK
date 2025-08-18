@@ -8,6 +8,7 @@ import simplerag.ragback.domain.index.converter.toIndexPreviewResponse
 import simplerag.ragback.domain.index.dto.IndexCreateRequest
 import simplerag.ragback.domain.index.dto.IndexDetailResponseList
 import simplerag.ragback.domain.index.dto.IndexPreviewResponse
+import simplerag.ragback.domain.index.dto.IndexUpdateRequest
 import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.ErrorCode
 import simplerag.ragback.global.error.IndexException
@@ -32,6 +33,22 @@ class IndexService(
     fun getIndexes(): IndexDetailResponseList {
         val indexes = indexRepository.findAllByOrderByCreatedAt()
         return toIndexDetailResponseList(indexes)
+    }
+
+    @Transactional
+    fun updateIndexes(
+        indexesId: Long,
+        indexUpdateRequest: IndexUpdateRequest
+    ): IndexPreviewResponse {
+        val index = indexRepository.findIndexById(indexesId) ?: throw IndexException(ErrorCode.NOT_FOUND)
+
+        if (indexUpdateRequest.overlapSize > indexUpdateRequest.chunkingSize) {
+            throw IndexException(ErrorCode.OVERLAP_OVERFLOW)
+        }
+
+        index.update(indexUpdateRequest)
+
+        return toIndexPreviewResponse(index)
     }
 
 }
