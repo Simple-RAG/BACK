@@ -8,12 +8,12 @@ data class IndexPreviewResponseList(
 )
 
 data class IndexPreviewResponse(
-    var indexesId: Long?,
+    var indexId: Long?,
     val snapshotName: String
 )
 
 data class IndexDetailResponse(
-    var indexesId: Long?,
+    var indexId: Long?,
     val snapshotName: String,
     val chunkingSize: Int,
     val overlapSize: Int,

@@ -31,18 +31,18 @@ class IndexService(
     }
 
     @Transactional(readOnly = true)
-    fun getIndex(indexesId: Long): IndexDetailResponse? {
-        val index = indexRepository.findIndexById(indexesId) ?: throw IndexException(ErrorCode.NOT_FOUND)
+    fun getIndex(indexId: Long): IndexDetailResponse? {
+        val index = indexRepository.findIndexById(indexId) ?: throw IndexException(ErrorCode.NOT_FOUND)
 
         return toIndexDetailResponse(index)
     }
 
     @Transactional
     fun updateIndexes(
-        indexesId: Long,
+        indexId: Long,
         indexUpdateRequest: IndexUpdateRequest
     ): IndexPreviewResponse {
-        val index = indexRepository.findIndexById(indexesId) ?: throw IndexException(ErrorCode.NOT_FOUND)
+        val index = indexRepository.findIndexById(indexId) ?: throw IndexException(ErrorCode.NOT_FOUND)
 
         if (indexUpdateRequest.overlapSize > indexUpdateRequest.chunkingSize) {
             throw IndexException(ErrorCode.OVERLAP_OVERFLOW)
@@ -54,8 +54,8 @@ class IndexService(
     }
 
     @Transactional
-    fun deleteIndex(indexesId: Long) {
-        val index = indexRepository.findIndexById(indexesId) ?: throw IndexException(ErrorCode.NOT_FOUND)
+    fun deleteIndex(indexId: Long) {
+        val index = indexRepository.findIndexById(indexId) ?: throw IndexException(ErrorCode.NOT_FOUND)
 
         indexRepository.delete(index)
     }

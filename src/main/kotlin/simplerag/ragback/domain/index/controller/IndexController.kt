@@ -30,28 +30,28 @@ class IndexController(
         return ApiResponse.ok(indexPreviewResponseList)
     }
 
-    @GetMapping("/{indexesId}")
+    @GetMapping("/{indexId}")
     fun getIndex(
-        @PathVariable indexesId: Long
+        @PathVariable indexId: Long
     ): ApiResponse<IndexDetailResponse> {
-        val indexDetailResponse = indexService.getIndex(indexesId)
+        val indexDetailResponse = indexService.getIndex(indexId)
         return ApiResponse.ok(indexDetailResponse)
     }
 
-    @PutMapping("/{indexesId}")
+    @PutMapping("/{indexId}")
     fun updateIndexes(
-        @PathVariable indexesId: Long,
+        @PathVariable indexId: Long,
         @RequestBody @Valid indexUpdateRequest: IndexUpdateRequest,
     ): ApiResponse<IndexPreviewResponse> {
-        val indexPreviewResponse = indexService.updateIndexes(indexesId, indexUpdateRequest)
+        val indexPreviewResponse = indexService.updateIndexes(indexId, indexUpdateRequest)
         return ApiResponse.ok(indexPreviewResponse)
     }
 
-    @DeleteMapping("/{indexesId}")
+    @DeleteMapping("/{indexId}")
     fun deleteIndex(
-        @PathVariable indexesId: Long
+        @PathVariable indexId: Long
     ): ApiResponse<Unit> {
-        indexService.deleteIndex(indexesId)
+        indexService.deleteIndex(indexId)
         return ApiResponse.ok(null, "인덱스가 삭제 되었습니다.")
     }
 

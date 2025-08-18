@@ -25,14 +25,14 @@ fun toIndexPreviewResponseList(
 
 fun toIndexPreviewResponse(index: Index): IndexPreviewResponse {
     return IndexPreviewResponse(
-        indexesId = index.id,
+        indexId = index.id,
         snapshotName = index.snapshotName,
     )
 }
 
 fun toIndexDetailResponse(index: Index): IndexDetailResponse {
     return IndexDetailResponse(
-        indexesId = index.id,
+        indexId = index.id,
         chunkingSize = index.chunkingSize,
         overlapSize = index.overlapSize,
         similarityMetric = index.similarityMetric,
