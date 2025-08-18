@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import simplerag.ragback.domain.index.dto.IndexCreateRequest
+import simplerag.ragback.domain.index.entity.Index
 import simplerag.ragback.domain.index.entity.enums.EmbeddingModel
 import simplerag.ragback.domain.index.entity.enums.SimilarityMetric
 import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.IndexException
+import org.assertj.core.api.Assertions.assertThat
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -44,7 +46,7 @@ class IndexServiceTest (
 
     @Test
     @DisplayName("인덱스 생성 시 overlap 크기가 chunking 크기를 넘어가면 에러가 터진다")
-    fun getIndexesTest() {
+    fun createIndexTestWithOverlapSize() {
         // given
         val indexCreateRequest = IndexCreateRequest("test", 1, 1, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
 
@@ -54,6 +56,40 @@ class IndexServiceTest (
         }.message
 
         assertEquals(message, "overlap 크기는 chunking 크기를 넘을 수 없습니다.")
+    }
+
+    @Test
+    @DisplayName("인덱스 리스트 조회가 된다")
+    fun getIndexesTest() {
+        // given
+        indexRepository.saveAll(
+            listOf(
+                Index(
+                "test",
+                1,
+                0,
+                SimilarityMetric.COSINE,
+                1,
+                EmbeddingModel.TEXT_EMBEDDING_3_LARGE,
+                true
+                ),
+                Index(
+                    "test2",
+                    1,
+                    0,
+                    SimilarityMetric.COSINE,
+                    1,
+                    EmbeddingModel.TEXT_EMBEDDING_3_LARGE,
+                    true
+                )
+            )
+        )
+
+        // when
+        val indexes = indexService.getIndexes()
+
+        // then
+        assertThat(indexes.indexDetailResponse.size).isEqualTo(2)
     }
 
 }
