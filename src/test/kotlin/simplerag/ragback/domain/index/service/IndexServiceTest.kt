@@ -182,4 +182,54 @@ class IndexServiceTest (
         assertThat(indexUpdateRequest.reranker).isEqualTo(index.reranker)
     }
 
+    @Test
+    @DisplayName("인덱스 수정 시 없는 인덱스를 조회하면 에러가 터진다.")
+    fun getUpdateTestWithInvalidIndex() {
+        // given
+        val savedIndex = indexRepository.save(
+            Index(
+                "test",
+                1,
+                0,
+                SimilarityMetric.COSINE,
+                1,
+                EmbeddingModel.TEXT_EMBEDDING_3_LARGE,
+                true
+            )
+        )
+
+        val indexUpdateRequest = IndexUpdateRequest("fixedTest", 2, 1, SimilarityMetric.EUCLIDEAN, 3, false)
+
+        // when * then
+        val message = assertThrows<IndexException> { indexService.updateIndex(savedIndex.id!! + 1L, indexUpdateRequest) }.message
+
+        assertEquals(message, "리소스를 찾을 수 없습니다.")
+    }
+
+    @Test
+    @DisplayName("인덱스 수정 시 overlap 크기가 chunking 크기를 넘어가면 에러가 터진다")
+    fun updateIndexTestWithOverlapSize() {
+        // given
+        val savedIndex = indexRepository.save(
+            Index(
+                "test",
+                1,
+                0,
+                SimilarityMetric.COSINE,
+                1,
+                EmbeddingModel.TEXT_EMBEDDING_3_LARGE,
+                true
+            )
+        )
+
+        val indexUpdateRequest = IndexUpdateRequest("fixedTest", 2, 2, SimilarityMetric.EUCLIDEAN, 3, false)
+
+        // when * then
+        val message = assertThrows<IndexException> {
+            indexService.updateIndex(savedIndex.id!!, indexUpdateRequest)
+        }.message
+
+        assertEquals(message, "overlap 크기는 chunking 크기를 넘을 수 없습니다.")
+    }
+
 }
