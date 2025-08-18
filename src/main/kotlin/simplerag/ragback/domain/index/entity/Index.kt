@@ -32,7 +32,7 @@ class Index(
 
     @Column(name = "embedding_model", nullable = false, length = 255)
     @Enumerated(EnumType.STRING)
-    var embeddingModel: EmbeddingModel,
+    val embeddingModel: EmbeddingModel,
 
     @Column(name = "reranker", nullable = false)
     var reranker: Boolean,
