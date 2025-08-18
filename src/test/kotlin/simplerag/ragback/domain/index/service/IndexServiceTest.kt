@@ -92,4 +92,34 @@ class IndexServiceTest (
         assertThat(indexes.indexDetailResponse.size).isEqualTo(2)
     }
 
+    @Test
+    @DisplayName("인덱스 상세 조회가 된다")
+    fun getIndexTest() {
+        // given
+        val savedIndex = indexRepository.save(
+            Index(
+                "test",
+                1,
+                0,
+                SimilarityMetric.COSINE,
+                1,
+                EmbeddingModel.TEXT_EMBEDDING_3_LARGE,
+                true
+            )
+        )
+
+        // when
+        val index = indexService.getIndex(savedIndex.id!!)
+
+        // then
+        assertThat(index.indexId).isEqualTo(savedIndex.id)
+        assertThat(index.snapshotName).isEqualTo(savedIndex.snapshotName)
+        assertThat(index.chunkingSize).isEqualTo(savedIndex.chunkingSize)
+        assertThat(index.overlapSize).isEqualTo(savedIndex.overlapSize)
+        assertThat(index.topK).isEqualTo(savedIndex.topK)
+        assertThat(index.embeddingModel).isEqualTo(savedIndex.embeddingModel)
+        assertThat(index.similarityMetric).isEqualTo(savedIndex.similarityMetric)
+        assertThat(index.reranker).isEqualTo(savedIndex.reranker)
+    }
+
 }
