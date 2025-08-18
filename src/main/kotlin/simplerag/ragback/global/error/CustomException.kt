@@ -11,6 +11,11 @@ class S3Exception(
     override val cause: Throwable? = null,
 ) : CustomException(errorCode, errorCode.message, cause)
 
+class IndexException(
+    override val errorCode: ErrorCode,
+    override val cause: Throwable? = null,
+) : CustomException(errorCode, errorCode.message, cause)
+
 class FileException(
     override val errorCode: ErrorCode,
     override val message: String,
