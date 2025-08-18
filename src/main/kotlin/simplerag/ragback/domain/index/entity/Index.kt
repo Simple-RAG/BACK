@@ -43,12 +43,6 @@ class Index(
 ): BaseEntity() {
 
     fun update(req: IndexUpdateRequest) {
-        require(req.chunkingSize >= 1) { "chunkingSize는 1 이상이어야 합니다." }
-        require(req.overlapSize >= 0) { "overlapSize는 0 이상이어야 합니다." }
-        require(req.overlapSize < req.chunkingSize) { "overlapSize는 chunkingSize보다 작아야 합니다." }
-        require(req.topK >= 1) { "topK는 1 이상이어야 합니다." }
-        require(req.snapshotName.isNotBlank()) { "snapshotName은 비어 있을 수 없습니다." }
-
         snapshotName = req.snapshotName.trim()
         chunkingSize = req.chunkingSize
         overlapSize = req.overlapSize
