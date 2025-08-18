@@ -18,7 +18,7 @@ class IndexController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createIndex(
-        @RequestBody indexCreateRequest: IndexCreateRequest
+        @RequestBody @Valid indexCreateRequest: IndexCreateRequest
     ): ApiResponse<IndexPreviewResponse> {
         val createdIndex = indexService.createIndex(indexCreateRequest)
         return ApiResponse.ok(createdIndex)
