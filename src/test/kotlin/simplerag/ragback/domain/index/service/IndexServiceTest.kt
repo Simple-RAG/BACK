@@ -57,7 +57,7 @@ class IndexServiceTest (
             indexService.createIndex(indexCreateRequest)
         }.message
 
-        assertEquals(message, "overlap 크기는 chunking 크기를 넘을 수 없습니다.")
+        assertEquals("overlap 크기는 chunking 크기를 넘을 수 없습니다.", message)
     }
 
     @Test
@@ -144,7 +144,7 @@ class IndexServiceTest (
         // when * then
         val message = assertThrows<IndexException> { indexService.getIndex(savedIndex.id!! + 1L) }.message
 
-        assertEquals(message, "리소스를 찾을 수 없습니다.")
+        assertEquals("리소스를 찾을 수 없습니다.", message)
     }
 
     @Test
@@ -203,7 +203,7 @@ class IndexServiceTest (
         // when * then
         val message = assertThrows<IndexException> { indexService.updateIndex(savedIndex.id!! + 1L, indexUpdateRequest) }.message
 
-        assertEquals(message, "리소스를 찾을 수 없습니다.")
+        assertEquals("리소스를 찾을 수 없습니다.", message)
     }
 
     @Test
@@ -229,7 +229,7 @@ class IndexServiceTest (
             indexService.updateIndex(savedIndex.id!!, indexUpdateRequest)
         }.message
 
-        assertEquals(message, "overlap 크기는 chunking 크기를 넘을 수 없습니다.")
+        assertEquals("overlap 크기는 chunking 크기를 넘을 수 없습니다.", message)
     }
 
     @Test
@@ -275,7 +275,7 @@ class IndexServiceTest (
         // when * then
         val message = assertThrows<IndexException> { indexService.deleteIndex(savedIndex.id!! + 1L) }.message
 
-        assertEquals(message, "리소스를 찾을 수 없습니다.")
+        assertEquals("리소스를 찾을 수 없습니다.", message)
     }
 
 }
