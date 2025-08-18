@@ -31,7 +31,7 @@ class IndexService(
     }
 
     @Transactional(readOnly = true)
-    fun getIndex(indexId: Long): IndexDetailResponse? {
+    fun getIndex(indexId: Long): IndexDetailResponse {
         val index = indexRepository.findIndexById(indexId) ?: throw IndexException(ErrorCode.NOT_FOUND)
 
         return toIndexDetailResponse(index)
