@@ -16,6 +16,7 @@ import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.IndexException
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.transaction.annotation.Transactional
+import simplerag.ragback.domain.index.dto.IndexUpdateRequest
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -144,6 +145,41 @@ class IndexServiceTest (
         val message = assertThrows<IndexException> { indexService.getIndex(savedIndex.id!! + 1L) }.message
 
         assertEquals(message, "리소스를 찾을 수 없습니다.")
+    }
+
+    @Test
+    @DisplayName("인덱스 수정이 잘 된다")
+    fun updateIndexTest() {
+        // given
+        val savedIndex = indexRepository.save(
+            Index(
+                "test",
+                1,
+                0,
+                SimilarityMetric.COSINE,
+                1,
+                EmbeddingModel.TEXT_EMBEDDING_3_LARGE,
+                true
+            )
+        )
+
+        val indexUpdateRequest = IndexUpdateRequest("fixedTest", 2, 1, SimilarityMetric.EUCLIDEAN, 3, false)
+
+        // when
+        indexService.updateIndex(savedIndex.id!!, indexUpdateRequest)
+
+        // then
+        val optionalIndex = indexRepository.findById(savedIndex.id!!)
+        val index = optionalIndex.get()
+
+        assertThat(savedIndex.id).isEqualTo(index.id)
+        assertThat(indexUpdateRequest.snapshotName).isEqualTo(index.snapshotName)
+        assertThat(indexUpdateRequest.chunkingSize).isEqualTo(index.chunkingSize)
+        assertThat(indexUpdateRequest.overlapSize).isEqualTo(index.overlapSize)
+        assertThat(indexUpdateRequest.topK).isEqualTo(index.topK)
+        assertThat(savedIndex.embeddingModel).isEqualTo(index.embeddingModel)
+        assertThat(indexUpdateRequest.similarityMetric).isEqualTo(index.similarityMetric)
+        assertThat(indexUpdateRequest.reranker).isEqualTo(index.reranker)
     }
 
 }
