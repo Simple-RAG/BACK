@@ -26,7 +26,7 @@ class IndexService(
 
     @Transactional(readOnly = true)
     fun getIndexes(): IndexPreviewResponseList {
-        val indexes = indexRepository.findAllByOrderByCreatedAt()
+        val indexes = indexRepository.findAllByOrderByCreatedAtDesc()
         return toIndexPreviewResponseList(indexes)
     }
 

@@ -5,7 +5,7 @@ import simplerag.ragback.domain.index.entity.Index
 
 interface IndexRepository: JpaRepository<Index, Long> {
 
-    fun findAllByOrderByCreatedAt(): List<Index>
+    fun findAllByOrderByCreatedAtDesc(): List<Index>
 
     fun findIndexById(indexesId: Long): Index?
 }
