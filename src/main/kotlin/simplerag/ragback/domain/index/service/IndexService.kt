@@ -17,9 +17,7 @@ class IndexService(
     @Transactional
     fun createIndex(indexCreateRequest: IndexCreateRequest): IndexPreviewResponse {
 
-        if (indexCreateRequest.overlapSize >= indexCreateRequest.chunkingSize) {
-            throw IndexException(ErrorCode.OVERLAP_OVERFLOW)
-        }
+        validateOverlap(indexCreateRequest.overlapSize, indexCreateRequest.chunkingSize)
 
         val createdIndex = indexRepository.save(toIndex(indexCreateRequest))
         return toIndexPreviewResponse(createdIndex)
@@ -45,9 +43,7 @@ class IndexService(
     ): IndexPreviewResponse {
         val index = indexRepository.findByIdOrNull(indexId) ?: throw IndexException(ErrorCode.NOT_FOUND)
 
-        if (indexUpdateRequest.overlapSize >= indexUpdateRequest.chunkingSize) {
-            throw IndexException(ErrorCode.OVERLAP_OVERFLOW)
-        }
+        validateOverlap(indexUpdateRequest.overlapSize, indexUpdateRequest.chunkingSize)
 
         index.update(indexUpdateRequest)
 
@@ -59,6 +55,10 @@ class IndexService(
         val index = indexRepository.findByIdOrNull(indexId) ?: throw IndexException(ErrorCode.NOT_FOUND)
 
         indexRepository.delete(index)
+    }
+
+    private fun validateOverlap(overlapSize: Int, chunkingSize: Int) {
+        if (overlapSize >= chunkingSize) throw IndexException(ErrorCode.OVERLAP_OVERFLOW)
     }
 
 }
