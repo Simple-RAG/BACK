@@ -37,6 +37,9 @@ class Index(
     @Column(name = "reranker", nullable = false)
     var reranker: Boolean,
 
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "index")
+    val chunkingEmbeddingList: MutableList<ChunkEmbedding> = mutableListOf(),
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "indexes_id")
     var id: Long? = null,

@@ -48,7 +48,6 @@ class IndexController(
     }
 
     @DeleteMapping("/{indexId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteIndex(
         @PathVariable indexId: Long
     ): ApiResponse<Unit> {

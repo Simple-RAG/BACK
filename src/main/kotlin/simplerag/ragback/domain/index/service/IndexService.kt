@@ -59,8 +59,6 @@ class IndexService(
     fun deleteIndex(indexId: Long) {
         val index = indexRepository.findByIdOrNull(indexId) ?: throw IndexException(ErrorCode.NOT_FOUND)
 
-        chunkingEmbeddingRepository.deleteAllByIndex(index)
-
         indexRepository.delete(index)
     }
 
