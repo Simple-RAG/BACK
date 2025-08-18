@@ -253,7 +253,7 @@ class IndexServiceTest (
 
         // then
         val indexes = indexRepository.findAll()
-        assertEquals(indexes.size, 0)
+        assertEquals(0, indexes.size)
     }
 
     @Test
