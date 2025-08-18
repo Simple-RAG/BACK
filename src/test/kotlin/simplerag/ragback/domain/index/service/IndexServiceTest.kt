@@ -15,6 +15,7 @@ import simplerag.ragback.domain.index.entity.enums.SimilarityMetric
 import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.IndexException
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions.assertNull
 import org.springframework.transaction.annotation.Transactional
 import simplerag.ragback.domain.index.dto.IndexUpdateRequest
 
@@ -230,6 +231,52 @@ class IndexServiceTest (
         }.message
 
         assertEquals(message, "overlap 크기는 chunking 크기를 넘을 수 없습니다.")
+    }
+
+    @Test
+    @DisplayName("인덱스 삭제가 잘 된다")
+    fun deleteIndexTest() {
+        // given
+        val savedIndex = indexRepository.save(
+            Index(
+                "test",
+                1,
+                0,
+                SimilarityMetric.COSINE,
+                1,
+                EmbeddingModel.TEXT_EMBEDDING_3_LARGE,
+                true
+            )
+        )
+
+        // when
+        indexService.deleteIndex(savedIndex.id!!)
+
+        // then
+        val indexes = indexRepository.findAll()
+        assertThat(indexes.size).isEqualTo(0)
+    }
+
+    @Test
+    @DisplayName("인덱스 삭제 시 없는 인덱스를 조회하면 에러가 터진다.")
+    fun deleteTestWithInvalidIndex() {
+        // given
+        val savedIndex = indexRepository.save(
+            Index(
+                "test",
+                1,
+                0,
+                SimilarityMetric.COSINE,
+                1,
+                EmbeddingModel.TEXT_EMBEDDING_3_LARGE,
+                true
+            )
+        )
+
+        // when * then
+        val message = assertThrows<IndexException> { indexService.deleteIndex(savedIndex.id!! + 1L) }.message
+
+        assertEquals(message, "리소스를 찾을 수 없습니다.")
     }
 
 }
