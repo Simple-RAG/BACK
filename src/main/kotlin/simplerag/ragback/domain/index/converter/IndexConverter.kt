@@ -1,6 +1,9 @@
 package simplerag.ragback.domain.index.converter
 
-import simplerag.ragback.domain.index.dto.*
+import simplerag.ragback.domain.index.dto.IndexCreateRequest
+import simplerag.ragback.domain.index.dto.IndexDetailResponse
+import simplerag.ragback.domain.index.dto.IndexPreviewResponse
+import simplerag.ragback.domain.index.dto.IndexPreviewResponseList
 import simplerag.ragback.domain.index.entity.Index
 
 

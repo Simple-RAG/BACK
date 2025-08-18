@@ -19,4 +19,4 @@ class DataFileIndex(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "data_files_indexes_id")
     val id: Long? = null,
-): BaseEntity()
+) : BaseEntity()

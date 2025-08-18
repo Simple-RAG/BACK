@@ -3,7 +3,10 @@ package simplerag.ragback.domain.index.service
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import simplerag.ragback.domain.index.converter.*
+import simplerag.ragback.domain.index.converter.toIndex
+import simplerag.ragback.domain.index.converter.toIndexDetailResponse
+import simplerag.ragback.domain.index.converter.toIndexPreviewResponse
+import simplerag.ragback.domain.index.converter.toIndexPreviewResponseList
 import simplerag.ragback.domain.index.dto.*
 import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.ErrorCode

@@ -25,4 +25,4 @@ class FewShot(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "few_shots_id")
     val id: Long? = null,
-): BaseEntity()
+) : BaseEntity()

@@ -9,12 +9,14 @@ import simplerag.ragback.domain.document.entity.DataFileTag
 interface DataFileTagRepository : JpaRepository<DataFileTag, Long> {
     fun existsByDataFileIdAndTagId(dataFileId: Long, tagId: Long): Boolean
 
-    @Query("""
+    @Query(
+        """
         SELECT dft
         FROM DataFileTag dft
         JOIN FETCH dft.tag t
         WHERE dft.dataFile = :dataFile
-    """)
+    """
+    )
     fun findTagsByDataFile(@Param("dataFile") dataFile: DataFile): List<DataFileTag>
 
     fun deleteAllByDataFile(dataFile: DataFile)

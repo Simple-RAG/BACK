@@ -2,7 +2,6 @@ package simplerag.ragback.domain.document.entity
 
 import jakarta.persistence.*
 import simplerag.ragback.global.entity.BaseEntity
-import java.time.LocalDateTime
 
 @Entity
 @Table(

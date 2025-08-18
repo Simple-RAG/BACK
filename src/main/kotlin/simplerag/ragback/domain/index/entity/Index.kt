@@ -40,7 +40,7 @@ class Index(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "indexes_id")
     var id: Long? = null,
-): BaseEntity() {
+) : BaseEntity() {
 
     fun update(req: IndexUpdateRequest) {
         snapshotName = req.snapshotName.trim()

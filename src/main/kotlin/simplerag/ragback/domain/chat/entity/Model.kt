@@ -26,4 +26,4 @@ class Model(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "models_id")
     val id: Long? = null,
-): BaseEntity()
+) : BaseEntity()

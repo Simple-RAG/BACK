@@ -27,7 +27,7 @@ class ChunkEmbedding(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chunk_embeddings_id")
     val id: Long? = null,
-): BaseEntity() {
+) : BaseEntity() {
 
     @get:Transient
     val embedding: FloatArray get() = _embedding.copyOf()
