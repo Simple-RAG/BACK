@@ -8,7 +8,6 @@ import simplerag.ragback.domain.index.converter.toIndexDetailResponse
 import simplerag.ragback.domain.index.converter.toIndexPreviewResponse
 import simplerag.ragback.domain.index.converter.toIndexPreviewResponseList
 import simplerag.ragback.domain.index.dto.*
-import simplerag.ragback.domain.index.repository.ChunkingEmbeddingRepository
 import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.ErrorCode
 import simplerag.ragback.global.error.IndexException
@@ -16,7 +15,6 @@ import simplerag.ragback.global.error.IndexException
 @Service
 class IndexService(
     private val indexRepository: IndexRepository,
-    private val chunkingEmbeddingRepository: ChunkingEmbeddingRepository,
 ) {
 
     @Transactional
