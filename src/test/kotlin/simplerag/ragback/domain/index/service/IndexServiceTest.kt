@@ -15,7 +15,6 @@ import simplerag.ragback.domain.index.entity.enums.SimilarityMetric
 import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.IndexException
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assertions.assertNull
 import org.springframework.transaction.annotation.Transactional
 import simplerag.ragback.domain.index.dto.IndexUpdateRequest
 
@@ -254,7 +253,7 @@ class IndexServiceTest (
 
         // then
         val indexes = indexRepository.findAll()
-        assertThat(indexes.size).isEqualTo(0)
+        assertEquals(indexes.size, 0)
     }
 
     @Test
