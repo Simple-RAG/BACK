@@ -1,5 +1,6 @@
 package simplerag.ragback.domain.index.service
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
@@ -8,19 +9,18 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.transaction.annotation.Transactional
 import simplerag.ragback.domain.index.dto.IndexCreateRequest
+import simplerag.ragback.domain.index.dto.IndexUpdateRequest
 import simplerag.ragback.domain.index.entity.Index
 import simplerag.ragback.domain.index.entity.enums.EmbeddingModel
 import simplerag.ragback.domain.index.entity.enums.SimilarityMetric
 import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.IndexException
-import org.assertj.core.api.Assertions.assertThat
-import org.springframework.transaction.annotation.Transactional
-import simplerag.ragback.domain.index.dto.IndexUpdateRequest
 
 @SpringBootTest
 @ActiveProfiles("test")
-class IndexServiceTest (
+class IndexServiceTest(
     @Autowired private val indexRepository: IndexRepository,
     @Autowired private val indexService: IndexService,
 ) {
@@ -34,7 +34,8 @@ class IndexServiceTest (
     @DisplayName("인덱스 생성이 정상 작동한다")
     fun createIndexTest() {
         // given
-        val indexCreateRequest = IndexCreateRequest("test", 1, 0, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
+        val indexCreateRequest =
+            IndexCreateRequest("test", 1, 0, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
 
         // when
         val createIndexResponse = indexService.createIndex(indexCreateRequest)
@@ -50,7 +51,8 @@ class IndexServiceTest (
     @DisplayName("인덱스 생성 시 overlap 크기가 chunking 크기를 넘어가면 에러가 터진다")
     fun createIndexTestWithOverlapSize() {
         // given
-        val indexCreateRequest = IndexCreateRequest("test", 1, 1, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
+        val indexCreateRequest =
+            IndexCreateRequest("test", 1, 1, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
 
         // when * then
         val message = assertThrows<IndexException> {
@@ -67,13 +69,13 @@ class IndexServiceTest (
         indexRepository.saveAll(
             listOf(
                 Index(
-                "test",
-                1,
-                0,
-                SimilarityMetric.COSINE,
-                1,
-                EmbeddingModel.TEXT_EMBEDDING_3_LARGE,
-                true
+                    "test",
+                    1,
+                    0,
+                    SimilarityMetric.COSINE,
+                    1,
+                    EmbeddingModel.TEXT_EMBEDDING_3_LARGE,
+                    true
                 ),
                 Index(
                     "test2",
@@ -201,7 +203,8 @@ class IndexServiceTest (
         val indexUpdateRequest = IndexUpdateRequest("fixedTest", 2, 1, SimilarityMetric.EUCLIDEAN, 3, false)
 
         // when * then
-        val message = assertThrows<IndexException> { indexService.updateIndex(savedIndex.id!! + 1L, indexUpdateRequest) }.message
+        val message =
+            assertThrows<IndexException> { indexService.updateIndex(savedIndex.id!! + 1L, indexUpdateRequest) }.message
 
         assertEquals("리소스를 찾을 수 없습니다.", message)
     }
