@@ -15,6 +15,7 @@ import simplerag.ragback.domain.index.entity.enums.SimilarityMetric
 import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.IndexException
 import org.assertj.core.api.Assertions.assertThat
+import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -120,6 +121,29 @@ class IndexServiceTest (
         assertThat(index.embeddingModel).isEqualTo(savedIndex.embeddingModel)
         assertThat(index.similarityMetric).isEqualTo(savedIndex.similarityMetric)
         assertThat(index.reranker).isEqualTo(savedIndex.reranker)
+    }
+
+    @Test
+    @DisplayName("인덱스 상세 조회 시 없는 인덱스를 조회하면 에러가 터진다.")
+    @Transactional
+    fun getIndexTestWithInvalidIndex() {
+        // given
+        val savedIndex = indexRepository.save(
+            Index(
+                "test",
+                1,
+                0,
+                SimilarityMetric.COSINE,
+                1,
+                EmbeddingModel.TEXT_EMBEDDING_3_LARGE,
+                true
+            )
+        )
+
+        // when * then
+        val message = assertThrows<IndexException> { indexService.getIndex(savedIndex.id!! + 1L) }.message
+
+        assertEquals(message, "리소스를 찾을 수 없습니다.")
     }
 
 }
