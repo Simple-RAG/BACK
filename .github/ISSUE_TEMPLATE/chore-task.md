@@ -1,12 +1,12 @@
 ---
-name: "🧹 Chore"
+name: "🚀 Chore"
 about: 리팩토링/빌드/의존성/CI/CD 등 비기능적 작업
-title: "🧹 [Chore] "
+title: "🚀 [Chore] "
 labels: chore
 assignees: ''
 ---
 
-## 🧹 작업 내용
+## 🚀 작업 내용
 무엇을 정리/개선/변경하려는지 적어주세요.
 
 ## 📌 배경 / 필요성
