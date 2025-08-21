@@ -4,6 +4,7 @@ import simplerag.ragback.domain.document.entity.DataFile
 import simplerag.ragback.domain.document.entity.DataFileTag
 import simplerag.ragback.domain.document.entity.Tag
 import java.time.LocalDateTime
+import kotlin.math.pow
 import kotlin.math.round
 
 data class DataFilePreviewResponseList(
@@ -79,6 +80,6 @@ data class TagDTO(
 private fun Long.toMegaBytes(precision: Int = 2): Double {
     val mb = this / (1024.0 * 1024.0)
     if (precision <= 0) return mb
-    val scale = Math.pow(10.0, precision.toDouble())
+    val scale = 10.0.pow(precision.toDouble())
     return round(mb * scale) / scale
 }
