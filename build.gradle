@@ -44,11 +44,12 @@ dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.postgresql:postgresql'
 
     testImplementation "org.springframework.boot:spring-boot-testcontainers"
     testImplementation "org.testcontainers:postgresql"
     testImplementation "org.testcontainers:junit-jupiter"
+    testImplementation "com.pgvector:pgvector:0.1.6"
 
     // swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
@@ -56,6 +57,9 @@ dependencies {
     // s3
     implementation(platform("software.amazon.awssdk:bom:2.25.70"))
     implementation("software.amazon.awssdk:s3")
+
+    // pgvector
+    implementation("com.pgvector:pgvector:0.1.6")
 }
 
 dependencyManagement {

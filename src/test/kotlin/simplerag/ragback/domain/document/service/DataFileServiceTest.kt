@@ -15,6 +15,7 @@ import org.springframework.transaction.support.TransactionTemplate
 import org.springframework.web.multipart.MultipartFile
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.utility.DockerImageName
 import simplerag.ragback.domain.document.dto.DataFileBulkCreateRequest
 import simplerag.ragback.domain.document.dto.DataFileCreateItem
 import simplerag.ragback.domain.document.entity.DataFile
@@ -39,10 +40,18 @@ class DataFileServiceTest(
     @Autowired private val s3Util: FakeS3Util
 ) {
 
+
     companion object {
-        @Container
+
+        private val pgvectorImage = DockerImageName
+            .parse("pgvector/pgvector:pg16")
+            .asCompatibleSubstituteFor("postgres")
+
         @ServiceConnection
-        val postgres = PostgreSQLContainer("postgres:15.3")
+        val postgres: PostgreSQLContainer<*> =
+            PostgreSQLContainer(pgvectorImage).apply {
+                withInitScript("db/init.sql")
+            }
     }
 
     @Autowired

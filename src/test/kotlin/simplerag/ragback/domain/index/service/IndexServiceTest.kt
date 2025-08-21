@@ -19,19 +19,31 @@ import simplerag.ragback.domain.index.entity.enums.SimilarityMetric
 import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.IndexException
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
+import org.springframework.test.context.TestConstructor
+import org.testcontainers.utility.DockerImageName
 
 
 @SpringBootTest
 @ActiveProfiles("test")
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class IndexServiceTest(
-    @Autowired private val indexRepository: IndexRepository,
-    @Autowired private val indexService: IndexService,
+    @Autowired val indexService: IndexService,
+    @Autowired val indexRepository: IndexRepository,
 ) {
 
+
+
     companion object {
-        @Container
+
+        private val pgvectorImage = DockerImageName
+            .parse("pgvector/pgvector:pg16")
+            .asCompatibleSubstituteFor("postgres")
+
         @ServiceConnection
-        val postgres = PostgreSQLContainer("postgres:15.3")
+        val postgres: PostgreSQLContainer<*> =
+            PostgreSQLContainer(pgvectorImage).apply {
+                withInitScript("db/init.sql")
+            }
     }
 
     @AfterEach
