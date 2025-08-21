@@ -46,7 +46,7 @@ class DataFileController(
 
     @GetMapping
     fun getDataFiles(
-        @RequestParam(name = "cursor", defaultValue = "0") cursor: Long,
+        @RequestParam(name = "cursor", defaultValue = "0") @Min(0) cursor: Long,
         @RequestParam(name = "take", defaultValue = "10") @Min(1) @Max(100) take: Int,
     ): ApiResponse<DataFileDetailResponseList> {
         val data = dataFileService.getDataFiles(cursor, take)
