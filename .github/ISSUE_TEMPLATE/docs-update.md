@@ -1,31 +1,31 @@
 ---
 name: "📝 Docs Update"
-about: 문서(README/가이드/주석 등) 수정이나 추가 요청
+about: Request for documentation updates (README/Guides/Comments, etc.)
 title: "📝 [Docs] "
 labels: documentation
 assignees: ''
 ---
 
-## 📝 설명
-어떤 문서를 어떻게 업데이트해야 하는지 간단히 적어주세요.
+## 📝 Description
+Briefly describe which document needs updating and how.
 
-## 📌 배경 / 필요성
-왜 이 문서 변경이 필요한가요? 어떤 혼선을 줄이거나 가치를 제공하나요?
+## 📌 Background / Necessity
+Why is this document change necessary? What confusion does it reduce or value does it add?
 
-## 📋 변경 범위
+## 📋 Scope of Changes
 - [ ] README
-- [ ] 설치/빠른 시작
-- [ ] API 문서
-- [ ] 주석/인라인 문서
-- [ ] 기타:
+- [ ] Installation/Quick Start
+- [ ] API Docs
+- [ ] Comments/Inline Docs
+- [ ] Others:
 
-## ✅ 수락 기준 (Acceptance Criteria)
-- [ ] 독자가 따라할 수 있는 단계가 명확함
-- [ ] 최신 코드/설정과 일치함
-- [ ] 링크/이미지가 정상 동작함
+## ✅ Acceptance Criteria
+- [ ] Instructions are clear and easy to follow
+- [ ] Matches the latest code/configurations
+- [ ] Links/images work correctly
 
-## 📷 참고 자료 (선택)
-관련 링크, 이미지, 문서가 있다면 첨부해주세요.
+## 📷 References (Optional)
+Attach relevant links, images, or docs if available.
 
-## 🗒️ 추가 메모
-기타 참고 사항을 적어주세요.
+## 🗒️ Additional Notes
+Add any other context or information here.

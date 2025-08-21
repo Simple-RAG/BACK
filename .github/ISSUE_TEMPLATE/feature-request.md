@@ -1,24 +1,24 @@
 ---
 name: "✨ Feature Request"
-about: 새로운 기능이나 개선 사항 제안
+about: Suggest a new feature or improvement
 title: "✨ [Feature] "
 labels: enhancement
 assignees: ''
 ---
 
-## 📝 설명
-기능에 대한 간단한 설명을 작성해주세요.
+## 📝 Description
+Briefly describe the feature.
 
-## 📌 배경 / 필요성
-왜 이 기능이 필요한지, 어떤 문제를 해결하는지 설명해주세요.
+## 📌 Background / Necessity
+Why is this feature needed? What problem does it solve?
 
-## 📋 상세 요구사항
-- [ ] 요구사항 1
-- [ ] 요구사항 2
-- [ ] 요구사항 3
+## 📋 Detailed Requirements
+- [ ] Requirement 1
+- [ ] Requirement 2
+- [ ] Requirement 3
 
-## 📷 참고 자료 (선택)
-관련 이미지, 링크, 문서 등이 있으면 첨부해주세요.
+## 📷 References (Optional)
+Attach related images, links, or documents if available.
 
-## 🗒️ 추가 메모
-기타 참고 사항을 적어주세요.
+## 🗒️ Additional Notes
+Add any other context or information here.
