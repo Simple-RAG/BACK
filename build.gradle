@@ -44,7 +44,7 @@ dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.postgresql:postgresql'   // ← 변경
     testRuntimeOnly("com.h2database:h2")
 
     // swagger
@@ -53,6 +53,9 @@ dependencies {
     // s3
     implementation(platform("software.amazon.awssdk:bom:2.25.70"))
     implementation("software.amazon.awssdk:s3")
+
+    // pgvector
+    implementation("com.pgvector:pgvector:0.1.6")
 }
 
 dependencyManagement {
