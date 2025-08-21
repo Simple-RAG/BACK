@@ -1,16 +1,21 @@
 package simplerag.ragback.domain.document.service
 
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionTemplate
 import org.springframework.web.multipart.MultipartFile
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.utility.DockerImageName
 import simplerag.ragback.domain.document.dto.DataFileBulkCreateRequest
 import simplerag.ragback.domain.document.dto.DataFileCreateItem
 import simplerag.ragback.domain.document.entity.DataFile
@@ -28,19 +33,33 @@ import java.security.MessageDigest
 @SpringBootTest
 @ActiveProfiles("test")
 class DataFileServiceTest(
-    @Autowired private val dataFileService: DataFileService,
-    @Autowired private val dataFileRepository: DataFileRepository,
-    @Autowired private val tagRepository: TagRepository,
-    @Autowired private val dataFileTagRepository: DataFileTagRepository,
-    @Autowired private val s3Util: FakeS3Util
+    private val dataFileService: DataFileService,
+    private val dataFileRepository: DataFileRepository,
+    private val tagRepository: TagRepository,
+    private val dataFileTagRepository: DataFileTagRepository,
+    private val s3Util: FakeS3Util
 ) {
+
+
+    companion object {
+
+        private val pgvectorImage = DockerImageName
+            .parse("pgvector/pgvector:pg16")
+            .asCompatibleSubstituteFor("postgres")
+
+        @ServiceConnection
+        val postgres: PostgreSQLContainer<*> =
+            PostgreSQLContainer(pgvectorImage).apply {
+                withInitScript("db/init.sql")
+            }
+    }
 
     @Autowired
     lateinit var txManager: org.springframework.transaction.PlatformTransactionManager
 
     private fun txTemplate() = TransactionTemplate(txManager)
 
-    @BeforeEach
+    @AfterEach
     fun clean() {
         dataFileTagRepository.deleteAll()
         tagRepository.deleteAll()

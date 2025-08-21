@@ -2,6 +2,7 @@ package simplerag.ragback.domain.index.entity
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.Min
+import simplerag.ragback.domain.index.dto.IndexCreateRequest
 import simplerag.ragback.domain.index.dto.IndexUpdateRequest
 import simplerag.ragback.domain.index.entity.enums.EmbeddingModel
 import simplerag.ragback.domain.index.entity.enums.SimilarityMetric
@@ -44,6 +45,20 @@ class Index(
     @Column(name = "indexes_id")
     var id: Long? = null,
 ) : BaseEntity() {
+
+    companion object {
+        fun toIndex(createRequest: IndexCreateRequest): Index {
+            return Index(
+                snapshotName = createRequest.snapshotName.trim(),
+                overlapSize = createRequest.overlapSize,
+                chunkingSize = createRequest.chunkingSize,
+                similarityMetric = createRequest.similarityMetric,
+                topK = createRequest.topK,
+                embeddingModel = createRequest.embeddingModel,
+                reranker = createRequest.reranker
+            )
+        }
+    }
 
     fun update(req: IndexUpdateRequest) {
         snapshotName = req.snapshotName.trim()

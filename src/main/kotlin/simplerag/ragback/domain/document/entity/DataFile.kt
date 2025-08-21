@@ -28,4 +28,10 @@ class DataFile(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "data_files_id")
     val id: Long? = null,
-) : BaseEntity()
+) : BaseEntity() {
+    companion object {
+        fun from(title: String, type: String, sizeBytes : Long, sha256 : String, fileUrl: String): DataFile {
+            return DataFile(title, type, sizeBytes, sha256, fileUrl)
+        }
+    }
+}

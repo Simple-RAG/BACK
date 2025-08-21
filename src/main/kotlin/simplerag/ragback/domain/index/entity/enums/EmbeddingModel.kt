@@ -6,6 +6,7 @@ enum class EmbeddingModel(
 ) {
     // OpenAI
     TEXT_EMBEDDING_3_SMALL(1536, "text-embedding-3-small"),
+    TEXT_EMBEDDING_3_LARGE(3072, "text-embedding-3-large"),
 
     // SBERT / HuggingFace
     ALL_MINILM_L6_V2(384, "sentence-transformers/all-MiniLM-L6-v2"),

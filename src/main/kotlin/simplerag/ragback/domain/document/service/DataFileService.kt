@@ -35,18 +35,16 @@ class DataFileService(
     fun upload(
         files: List<MultipartFile>,
         req: DataFileBulkCreateRequest
-    ): DataFileResponseList {
+    ): DataFilePreviewResponseList {
         if (files.isEmpty() || files.size != req.items.size) {
             throw CustomException(ErrorCode.INVALID_INPUT)
         }
 
         val uploadedUrls = mutableListOf<String>()
-
         registerRollbackCleanup(uploadedUrls)
 
         val responses = files.mapIndexed { idx, file ->
             val meta = req.items[idx]
-
             val metrics = file.computeMetricsStreaming()
             val sha256 = metrics.sha256
             val sizeBytes = metrics.sizeByte
@@ -60,7 +58,7 @@ class DataFileService(
             uploadedUrls += fileUrl
 
             val dataFile = try {
-                dataFileRepository.save(DataFile(meta.title, type, sizeBytes, sha256, fileUrl))
+                dataFileRepository.save(DataFile.from(meta.title, type, sizeBytes, sha256, fileUrl))
             } catch (ex: DataIntegrityViolationException) {
                 throw FileException(ErrorCode.ALREADY_FILE, sha256)
             }
@@ -68,31 +66,28 @@ class DataFileService(
             val tags = getOrCreateTags(meta.tags)
             attachTagsIfMissing(dataFile, tags)
 
-            DataFilePreviewResponse(requireNotNull(dataFile.id), dataFile.sha256)
+            DataFilePreviewResponse.from(dataFile)
         }
 
-        return DataFileResponseList(responses)
+        return DataFilePreviewResponseList(responses)
     }
 
     @Transactional(readOnly = true)
-    fun getDataFiles(cursor: Long, take: Int): DataFileDetailResponseList {
+    fun getDataFiles(
+        cursor: Long,
+        take: Int
+    ): DataFileDetailResponseList {
+        val files = dataFileRepository.findByIdGreaterThanOrderById(cursor, PageRequest.of(0, take))
 
-        val dataSlice = dataFileRepository.findByIdGreaterThanOrderById(cursor, PageRequest.of(0, take))
+        val allLinks = dataFileTagRepository.findAllByDataFileIn(files.content)
+        val tagsByFileId: Map<Long, List<TagDTO>> =
+            allLinks.groupBy(
+                keySelector = { requireNotNull(it.dataFile.id) { "DataFile.id is null" } }
+            ).mapValues { (_, links) -> TagDTO.from(links) }
 
-        val dataFileList: MutableList<DataFileDetailResponse> = ArrayList()
-        dataSlice.forEach { dataFile ->
-            val dataFileTags: List<DataFileTag> = dataFileTagRepository.findTagsByDataFile(dataFile)
+        val nextCursor = files.content.lastOrNull()?.id
 
-            val tagDtos: List<TagDTO> = dataFileTags.map { dataFileTag ->
-                val tag = dataFileTag.tag
-                TagDTO(tag.id, tag.name)
-            }
-
-            dataFileList.add(DataFileDetailResponse.of(dataFile, tagDtos))
-        }
-
-        val nextCursor: Long? = dataFileList.lastOrNull()?.id
-        return DataFileDetailResponseList(dataFileList, nextCursor, dataSlice.hasNext())
+        return DataFileDetailResponseList.from(files.content, tagsByFileId, nextCursor, files.hasNext())
     }
 
     @Transactional

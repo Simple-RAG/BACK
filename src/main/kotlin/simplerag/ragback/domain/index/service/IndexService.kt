@@ -3,11 +3,8 @@ package simplerag.ragback.domain.index.service
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import simplerag.ragback.domain.index.converter.toIndex
-import simplerag.ragback.domain.index.converter.toIndexDetailResponse
-import simplerag.ragback.domain.index.converter.toIndexPreviewResponse
-import simplerag.ragback.domain.index.converter.toIndexPreviewResponseList
 import simplerag.ragback.domain.index.dto.*
+import simplerag.ragback.domain.index.entity.Index
 import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.ErrorCode
 import simplerag.ragback.global.error.IndexException
@@ -22,21 +19,21 @@ class IndexService(
 
         validateOverlap(indexCreateRequest.overlapSize, indexCreateRequest.chunkingSize)
 
-        val createdIndex = indexRepository.save(toIndex(indexCreateRequest))
-        return toIndexPreviewResponse(createdIndex)
+        val createdIndex = indexRepository.save(Index.toIndex(indexCreateRequest))
+        return IndexPreviewResponse.toIndexPreviewResponse(createdIndex)
     }
 
     @Transactional(readOnly = true)
     fun getIndexes(): IndexPreviewResponseList {
         val indexes = indexRepository.findAllByOrderByCreatedAtDesc()
-        return toIndexPreviewResponseList(indexes)
+        return IndexPreviewResponseList.toIndexPreviewResponseList(indexes)
     }
 
     @Transactional(readOnly = true)
     fun getIndex(indexId: Long): IndexDetailResponse {
         val index = indexRepository.findByIdOrNull(indexId) ?: throw IndexException(ErrorCode.NOT_FOUND)
 
-        return toIndexDetailResponse(index)
+        return IndexDetailResponse.toIndexDetailResponse(index)
     }
 
     @Transactional
@@ -50,7 +47,7 @@ class IndexService(
 
         index.update(indexUpdateRequest)
 
-        return toIndexPreviewResponse(index)
+        return IndexPreviewResponse.toIndexPreviewResponse(index)
     }
 
     @Transactional
