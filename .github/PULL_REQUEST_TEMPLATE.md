@@ -1,25 +1,23 @@
-## 📌 PR 개요
-PR에 대한 간단한 설명을 작성해주세요.
+## 📌 Overview
+Provide a brief description of this PR.
 
-## 🔍 관련 이슈
-- Closes #이슈번호
+## 🔍 Related Issues
+- Closes #IssueNumber
 
-## ✨ 변경 사항
-- 기능 1
-  - 관련 커밋
-- 기능 2
-  - 관련 커밋
-- 기능 3
-  - 관련 커밋
+## ✨ Changes
+- Feature 1
+Related commit
+- Feature 2
 
-## 📸 스크린샷 / 동작 확인 결과 (선택)
-필요하다면 이미지나 동영상 첨부.
 
-## ✅ 체크리스트
-- [ ] 코드 스타일을 준수했습니다.
-- [ ] 불필요한 주석이나 콘솔 로그를 제거했습니다.
-- [ ] 관련 테스트를 작성/수정했습니다.
-- [ ] 로컬 환경에서 모든 기능이 정상 작동함을 확인했습니다.
+## 📸 Screenshots / Test Results (Optional)
+Attach images or videos if necessary.
 
-## 🗒️ 추가 메모
-기타 참고 사항을 적어주세요.
+## ✅ Checklist
+- [ ] I have followed the code style guidelines.
+- [ ] I have removed unnecessary comments or console logs.
+- [ ] I have written/updated related tests.
+- [ ] I have verified that all features work correctly in my local environment.
+
+## 🗒️ Additional Notes
+Add any other context or information here.
