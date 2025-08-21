@@ -33,11 +33,11 @@ import java.security.MessageDigest
 @SpringBootTest
 @ActiveProfiles("test")
 class DataFileServiceTest(
-    @Autowired private val dataFileService: DataFileService,
-    @Autowired private val dataFileRepository: DataFileRepository,
-    @Autowired private val tagRepository: TagRepository,
-    @Autowired private val dataFileTagRepository: DataFileTagRepository,
-    @Autowired private val s3Util: FakeS3Util
+    private val dataFileService: DataFileService,
+    private val dataFileRepository: DataFileRepository,
+    private val tagRepository: TagRepository,
+    private val dataFileTagRepository: DataFileTagRepository,
+    private val s3Util: FakeS3Util
 ) {
 
 
