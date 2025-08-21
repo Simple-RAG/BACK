@@ -53,6 +53,9 @@ dependencies {
     // s3
     implementation(platform("software.amazon.awssdk:bom:2.25.70"))
     implementation("software.amazon.awssdk:s3")
+
+    // pgvector
+    implementation("com.pgvector:pgvector:0.1.6")
 }
 
 dependencyManagement {
