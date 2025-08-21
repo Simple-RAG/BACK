@@ -9,6 +9,8 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.junit.jupiter.Container
 import simplerag.ragback.domain.index.dto.IndexCreateRequest
 import simplerag.ragback.domain.index.dto.IndexUpdateRequest
 import simplerag.ragback.domain.index.entity.Index
@@ -16,6 +18,8 @@ import simplerag.ragback.domain.index.entity.enums.EmbeddingModel
 import simplerag.ragback.domain.index.entity.enums.SimilarityMetric
 import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.IndexException
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection
+
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -23,6 +27,12 @@ class IndexServiceTest(
     @Autowired private val indexRepository: IndexRepository,
     @Autowired private val indexService: IndexService,
 ) {
+
+    companion object {
+        @Container
+        @ServiceConnection
+        val postgres = PostgreSQLContainer("postgres:15.3")
+    }
 
     @AfterEach
     fun cleanUp() {
@@ -92,7 +102,7 @@ class IndexServiceTest(
         val indexes = indexService.getIndexes()
 
         // then
-        assertThat(indexes.indexDetailResponse.size).isEqualTo(2)
+        assertThat(indexes.indexPreviewResponseList.size).isEqualTo(2)
     }
 
     @Test

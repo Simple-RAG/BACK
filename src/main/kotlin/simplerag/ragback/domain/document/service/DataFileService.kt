@@ -85,8 +85,7 @@ class DataFileService(
                 keySelector = { requireNotNull(it.dataFile.id) { "DataFile.id is null" } }
             ).mapValues { (_, links) -> TagDTO.from(links) }
 
-        val lastId = files.content.lastOrNull()?.id
-        val nextCursor: Long? = if (files.hasNext()) lastId else null
+        val nextCursor = files.content.lastOrNull()?.id
 
         return DataFileDetailResponseList.from(files.content, tagsByFileId, nextCursor, files.hasNext())
     }

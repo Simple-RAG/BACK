@@ -1,16 +1,20 @@
 package simplerag.ragback.domain.document.service
 
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionTemplate
 import org.springframework.web.multipart.MultipartFile
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.junit.jupiter.Container
 import simplerag.ragback.domain.document.dto.DataFileBulkCreateRequest
 import simplerag.ragback.domain.document.dto.DataFileCreateItem
 import simplerag.ragback.domain.document.entity.DataFile
@@ -35,12 +39,18 @@ class DataFileServiceTest(
     @Autowired private val s3Util: FakeS3Util
 ) {
 
+    companion object {
+        @Container
+        @ServiceConnection
+        val postgres = PostgreSQLContainer("postgres:15.3")
+    }
+
     @Autowired
     lateinit var txManager: org.springframework.transaction.PlatformTransactionManager
 
     private fun txTemplate() = TransactionTemplate(txManager)
 
-    @BeforeEach
+    @AfterEach
     fun clean() {
         dataFileTagRepository.deleteAll()
         tagRepository.deleteAll()
