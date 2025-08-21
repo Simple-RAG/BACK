@@ -1,24 +1,24 @@
 ---
 name: "🐛 Bug Report"
-about: 버그나 오류 제보
+about: Report a bug or issue
 title: "🐛 [Bug] "
 labels: bug
 assignees: ''
 ---
 
-## 🐞 버그 설명
-발생한 문제에 대해 간략히 설명해주세요.
+## 🐞 Bug Description
+Please briefly describe the problem that occurred.
 
-## 🔄 재현 방법
+## 🔄 Steps to Reproduce
 1. ...
 2. ...
 3. ...
 
-## ✅ 기대 동작
-정상적으로 동작했을 경우의 기대 결과를 작성해주세요.
+## ✅ Expected Behavior
+Describe the expected outcome when it works correctly.
 
-## 📷 스크린샷 / 로그 (선택)
-관련 이미지나 로그를 첨부해주세요.
+## 📷 Screenshots / Logs (Optional)
+Attach relevant images or logs if available.
 
-## 🗒️ 추가 메모
-기타 참고 사항을 적어주세요.
+## 🗒️ Additional Notes
+Add any other context or information here.

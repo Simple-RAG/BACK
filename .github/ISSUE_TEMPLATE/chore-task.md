@@ -1,32 +1,28 @@
 ---
 name: "🚀 Chore"
-about: 리팩토링/빌드/의존성/CI/CD 등 비기능적 작업
+about: Non-functional tasks such as refactoring/build/dependency/CI/CD
 title: "🚀 [Chore] "
 labels: chore
 assignees: ''
 ---
 
-## 🚀 작업 내용
-무엇을 정리/개선/변경하려는지 적어주세요.
+## 🚀 Task Description
+Describe what you want to clean up/improve/change.
 
-## 📌 배경 / 필요성
-왜 이 작업이 필요한지, 어떤 리스크를 줄이거나 유지보수성을 높이는지 설명해주세요.
+## 📌 Background / Necessity
+Explain why this task is needed, what risk it reduces, or how it improves maintainability.
 
-## 📋 상세 작업
-- [ ] 의존성 업데이트 (예: `spring-boot 3.4.x`)
-- [ ] 빌드 스크립트/Gradle 설정 변경
-- [ ] CI/CD 파이프라인 수정
-- [ ] 코드 정리(포맷팅/네이밍/패키징)
-- [ ] 기타:
+## 📋 Detailed Tasks
+- [ ] Dependency update (e.g., `spring-boot 3.4.x`)
+- [ ] Build script/Gradle configuration changes
+- [ ] CI/CD pipeline modification
+- [ ] Code cleanup (formatting/naming/packaging)
+- [ ] Others:
 
-## 🔄 영향 범위
-- [ ] 런타임 동작 변경 없음
-- [ ] 테스트/문서 업데이트 필요
-- [ ] 배포 파이프라인 영향 가능
+## 🔄 Scope of Impact
+- [ ] No runtime behavior changes
+- [ ] Test/Documentation updates required
+- [ ] Potential impact on deployment pipeline
 
-## ✅ 수락 기준 (Acceptance Criteria)
-- [ ] 빌드/테스트가 모두 통과함
-- [ ] 변경사항이 CHANGELOG 또는 관련 문서에 반영됨 (필요 시)
-
-## 🗒️ 추가 메모
-기타 참고 사항을 적어주세요.
+## 🗒️ Additional Notes
+Add any other context or information here.
