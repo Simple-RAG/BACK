@@ -5,7 +5,7 @@ import simplerag.ragback.domain.index.entity.enums.EmbeddingModel
 import simplerag.ragback.domain.index.entity.enums.SimilarityMetric
 
 data class IndexPreviewResponseList(
-    val indexDetailResponse: List<IndexPreviewResponse>,
+    val indexPreviewResponseList: List<IndexPreviewResponse>,
 ) {
     companion object {
         fun toIndexPreviewResponseList(
