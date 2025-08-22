@@ -66,7 +66,7 @@ class DataFileService(
             val tags = getOrCreateTags(meta.tags)
             attachTagsIfMissing(dataFile, tags)
 
-            DataFilePreviewResponse.from(dataFile)
+            return@mapIndexed DataFilePreviewResponse.from(dataFile)
         }
 
         return DataFilePreviewResponseList(responses)
@@ -82,7 +82,7 @@ class DataFileService(
         val allLinks = dataFileTagRepository.findAllByDataFileIn(files.content)
         val tagsByFileId: Map<Long, List<TagDTO>> =
             allLinks.groupBy(
-                keySelector = { requireNotNull(it.dataFile.id) { "DataFile.id is null" } }
+                { requireNotNull(it.dataFile.id) { "DataFile.id is null" } }
             ).mapValues { (_, links) -> TagDTO.from(links) }
 
         val nextCursor = files.content.lastOrNull()?.id
@@ -92,17 +92,18 @@ class DataFileService(
 
     @Transactional
     fun deleteFile(dataFilesId: Long) {
-        val dataFile = dataFileRepository.findDataFileById(dataFilesId) ?: throw FileException(
-            ErrorCode.NOT_FOUND,
-            dataFilesId.toString()
-        )
+        val dataFile = dataFileRepository.findDataFileById(dataFilesId)
+            ?: throw FileException(
+                ErrorCode.NOT_FOUND,
+                dataFilesId.toString()
+            )
 
         dataFileTagRepository.deleteAllByDataFile(dataFile)
 
         dataFileRepository.delete(dataFile)
     }
 
-    private fun registerRollbackCleanup(uploadedUrls: MutableList<String>) {
+    private fun registerRollbackCleanup(uploadedUrls: List<String>) {
         if (TransactionSynchronizationManager.isSynchronizationActive()) {
             TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
                 override fun afterCompletion(status: Int) {
@@ -145,14 +146,14 @@ class DataFileService(
 
 
     private fun attachTagsIfMissing(dataFile: DataFile, tags: List<Tag>) {
-        val fileId = dataFile.id ?: return
-        tags.forEach { tag ->
-            val tagId = tag.id ?: return@forEach
-            val exists = dataFileTagRepository.existsByDataFileIdAndTagId(fileId, tagId)
-            if (!exists) {
-                dataFileTagRepository.save(DataFileTag(tag = tag, dataFile = dataFile))
-            }
-        }
-    }
+        val temp = tags.mapNotNull { tag ->
+            val exists = dataFileTagRepository.existsByDataFileIdAndTagId(dataFile.id, tag.id)
 
+            if (exists) return@mapNotNull null
+
+            return@mapNotNull DataFileTag(tag = tag, dataFile = dataFile)
+        }
+
+        dataFileTagRepository.saveAll(temp)
+    }
 }

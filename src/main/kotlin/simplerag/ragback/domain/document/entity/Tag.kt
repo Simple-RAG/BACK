@@ -12,8 +12,8 @@ class Tag(
 
     @Column(nullable = false, length = 60)
     val name: String,
-
+) : BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tags_id")
-    val id: Long? = null,
-) : BaseEntity()
+    val id: Long = 0
+}

@@ -41,7 +41,6 @@ class IndexService(
         for (file in files) {
             val url = file.fileUrl
             val content = contentLoader.load(url)
-            println(content)
             if (content.isBlank()) continue
 
             val chunks = TextChunker.chunkByCharsSeq(content, req.chunkingSize, req.overlapSize)
@@ -68,7 +67,8 @@ class IndexService(
 
     @Transactional(readOnly = true)
     fun getIndex(indexId: Long): IndexDetailResponse {
-        val index = indexRepository.findByIdOrNull(indexId) ?: throw IndexException(ErrorCode.NOT_FOUND)
+        val index = indexRepository.findByIdOrNull(indexId)
+            ?: throw IndexException(ErrorCode.NOT_FOUND)
 
         return IndexDetailResponse.toIndexDetailResponse(index)
     }
@@ -78,7 +78,8 @@ class IndexService(
         indexId: Long,
         indexUpdateRequest: IndexUpdateRequest
     ): IndexPreviewResponse {
-        val index = indexRepository.findByIdOrNull(indexId) ?: throw IndexException(ErrorCode.NOT_FOUND)
+        val index = indexRepository.findByIdOrNull(indexId)
+            ?: throw IndexException(ErrorCode.NOT_FOUND)
 
         validateOverlap(indexUpdateRequest.overlapSize, indexUpdateRequest.chunkingSize)
 
@@ -89,7 +90,8 @@ class IndexService(
 
     @Transactional
     fun deleteIndex(indexId: Long) {
-        val index = indexRepository.findByIdOrNull(indexId) ?: throw IndexException(ErrorCode.NOT_FOUND)
+        val index = indexRepository.findByIdOrNull(indexId)
+            ?: throw IndexException(ErrorCode.NOT_FOUND)
 
         indexRepository.delete(index)
     }

@@ -19,7 +19,8 @@ class Prompt(
     @Lob
     val systemPrompt: String,
 
+) : BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "prompts_id")
-    val id: Long? = null,
-) : BaseEntity()
+    val id: Long = 0
+}

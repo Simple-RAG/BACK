@@ -40,11 +40,10 @@ class Index(
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "index")
     val chunkEmbeddings: MutableList<ChunkEmbedding> = mutableListOf(),
-
+) : BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "indexes_id")
-    var id: Long? = null,
-) : BaseEntity() {
+    val id: Long = 0
 
     companion object {
         fun toIndex(createRequest: IndexCreateRequest): Index {

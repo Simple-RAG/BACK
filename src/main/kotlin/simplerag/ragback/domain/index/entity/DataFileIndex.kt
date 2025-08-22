@@ -16,7 +16,9 @@ class DataFileIndex(
     @JoinColumn(name = "indexes_id", nullable = false)
     val index: Index,
 
+) : BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "data_files_indexes_id")
-    val id: Long? = null,
-) : BaseEntity()
+    val id: Long = 0
+
+}

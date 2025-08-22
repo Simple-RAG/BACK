@@ -56,7 +56,7 @@ class IndexServiceTest(
     fun createIndexTest() {
         // given
         val indexCreateRequest =
-            IndexCreateRequest("test", 1, 0, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
+            IndexCreateRequest(listOf(1), "test", 1, 0, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
 
         // when
         val createIndexResponse = indexService.createIndex(indexCreateRequest)
@@ -73,7 +73,7 @@ class IndexServiceTest(
     fun createIndexTestWithOverlapSize() {
         // given
         val indexCreateRequest =
-            IndexCreateRequest("test", 1, 1, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
+            IndexCreateRequest(listOf(1),"test", 1, 1, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
 
         // when * then
         val message = assertThrows<IndexException> {

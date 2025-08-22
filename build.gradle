@@ -60,6 +60,10 @@ dependencies {
     // s3
     implementation(platform("software.amazon.awssdk:bom:2.25.70"))
     implementation("software.amazon.awssdk:s3")
+
+    // extractor
+    implementation 'org.apache.pdfbox:pdfbox:2.0.30'
+    implementation 'org.apache.poi:poi-ooxml:5.2.5'
 }
 
 dependencyManagement {

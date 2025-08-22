@@ -22,7 +22,8 @@ class FewShot(
     @JoinColumn(name = "prompts_id", nullable = false)
     val prompt: Prompt,
 
+) : BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "few_shots_id")
-    val id: Long? = null,
-) : BaseEntity()
+    val id: Long = 0
+}

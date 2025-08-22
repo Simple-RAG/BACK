@@ -43,7 +43,7 @@ data class DataFileDetailResponseList(
 }
 
 data class DataFileDetailResponse(
-    var id: Long?,
+    val id: Long,
     val title: String,
     val type: String,
     val lastModified: LocalDateTime,
@@ -54,7 +54,7 @@ data class DataFileDetailResponse(
     companion object {
         fun from(file: DataFile, tags: List<TagDTO>): DataFileDetailResponse =
             DataFileDetailResponse(
-                id = requireNotNull(file.id) { "DataFile.id is null" },
+                id = file.id,
                 title = file.title,
                 type = file.type,
                 lastModified = file.updatedAt,
@@ -66,7 +66,7 @@ data class DataFileDetailResponse(
 }
 
 data class TagDTO(
-    val id: Long?,
+    val id: Long,
     val name: String,
 ) {
     companion object {
