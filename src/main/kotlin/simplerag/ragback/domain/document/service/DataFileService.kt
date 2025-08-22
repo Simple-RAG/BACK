@@ -75,7 +75,7 @@ class DataFileService(
         val allLinks = dataFileTagRepository.findAllByDataFileIn(files.content)
         val tagsByFileId: Map<Long, List<TagDTO>> =
             allLinks.groupBy(
-                { requireNotNull(it.dataFile.id) { "DataFile.id is null" } }
+                { it.dataFile.id }
             ).mapValues { (_, links) -> TagDTO.from(links) }
 
         val nextCursor = files.content.lastOrNull()?.id
