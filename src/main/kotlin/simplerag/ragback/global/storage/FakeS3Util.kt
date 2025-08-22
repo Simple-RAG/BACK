@@ -4,9 +4,9 @@ import org.springframework.context.annotation.Primary
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
-import simplerag.ragback.global.util.S3Type
-import simplerag.ragback.global.util.S3Util
-import simplerag.ragback.global.util.sha256Hex
+import simplerag.ragback.global.util.s3.S3Type
+import simplerag.ragback.global.util.s3.S3Util
+import simplerag.ragback.global.util.converter.sha256Hex
 import java.util.concurrent.ConcurrentHashMap
 
 @Component

@@ -1,4 +1,4 @@
-package simplerag.ragback.global.util
+package simplerag.ragback.global.util.s3
 
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
@@ -58,9 +58,7 @@ class S3UtilImpl(
     }
 
     override fun urlFromKey(key: String): String =
-        s3.utilities()
-            .getUrl { it.bucket(bucket).key(key) }
-            .toExternalForm()
+        "https://mukit-s3.s3.ap-northeast-2.amazonaws.com/" + key
 
     override fun deleteByUrl(url: String) {
         val key = keyFromUrl(url) ?: throw S3Exception(ErrorCode.S3_INVALID_URL)

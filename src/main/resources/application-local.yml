@@ -8,6 +8,13 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  ai:
+    openai:
+      api-key: ${OPENAI_KEY}
+    model:
+      embedding:
+        options:
+        model: text-embedding-3-small
 
 logging:
   level:

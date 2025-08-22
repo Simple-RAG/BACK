@@ -1,6 +1,7 @@
 package simplerag.ragback.domain.index.dto
 
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.PositiveOrZero
 import org.hibernate.validator.constraints.Length
@@ -8,6 +9,10 @@ import simplerag.ragback.domain.index.entity.enums.EmbeddingModel
 import simplerag.ragback.domain.index.entity.enums.SimilarityMetric
 
 data class IndexCreateRequest(
+
+    @field:NotEmpty
+    val dataFileId: List<Long>,
+
     @field:Length(max = 255)
     @field:NotBlank
     val snapshotName: String,

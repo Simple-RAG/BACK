@@ -17,10 +17,10 @@ import simplerag.ragback.domain.document.repository.TagRepository
 import simplerag.ragback.global.error.CustomException
 import simplerag.ragback.global.error.ErrorCode
 import simplerag.ragback.global.error.FileException
-import simplerag.ragback.global.util.S3Type
-import simplerag.ragback.global.util.S3Util
-import simplerag.ragback.global.util.computeMetricsStreaming
-import simplerag.ragback.global.util.resolveContentType
+import simplerag.ragback.global.util.s3.S3Type
+import simplerag.ragback.global.util.s3.S3Util
+import simplerag.ragback.global.util.converter.computeMetricsStreaming
+import simplerag.ragback.global.util.converter.resolveContentType
 import java.util.*
 
 @Service

@@ -1,6 +1,5 @@
 package simplerag.ragback.domain.index.entity
 
-import com.pgvector.PGvector
 import jakarta.persistence.*
 import simplerag.ragback.global.entity.BaseEntity
 
@@ -9,12 +8,11 @@ import simplerag.ragback.global.entity.BaseEntity
 @Table(name = "chunk_embeddings")
 class ChunkEmbedding(
 
-    @Column(name = "content", nullable = false)
-    @Lob
+    @Column(name = "content", nullable = false, columnDefinition = "text")
     val content: String,
 
-    @Column(name = "embedding", columnDefinition = "vector")
-    var embedding: PGvector,
+    @Column(name = "embedding", columnDefinition = "vector(1536)", nullable = false)
+    var embedding: FloatArray,
 
     @Column(name = "embedding_dim", nullable = false)
     val embeddingDim: Int,

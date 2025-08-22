@@ -19,7 +19,7 @@ data class IndexPreviewResponseList(
 
 data class IndexPreviewResponse(
     var indexId: Long?,
-    val snapshotName: String
+    val snapshotName: String,
 ) {
     companion object {
         fun toIndexPreviewResponse(index: Index): IndexPreviewResponse {
