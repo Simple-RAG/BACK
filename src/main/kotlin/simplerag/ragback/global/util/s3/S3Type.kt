@@ -1,4 +1,4 @@
-package simplerag.ragback.global.util
+package simplerag.ragback.global.util.s3
 
 
 enum class S3Type(

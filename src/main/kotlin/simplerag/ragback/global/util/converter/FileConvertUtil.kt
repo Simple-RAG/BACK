@@ -1,4 +1,4 @@
-package simplerag.ragback.global.util
+package simplerag.ragback.global.util.converter
 
 import org.springframework.web.multipart.MultipartFile
 import java.io.BufferedInputStream

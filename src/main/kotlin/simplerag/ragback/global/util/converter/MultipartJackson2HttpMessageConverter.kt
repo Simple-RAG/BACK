@@ -1,4 +1,4 @@
-package simplerag.ragback.global.util
+package simplerag.ragback.global.util.converter
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.http.MediaType

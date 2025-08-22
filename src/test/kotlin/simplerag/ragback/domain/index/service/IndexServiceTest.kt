@@ -27,8 +27,8 @@ import org.testcontainers.utility.DockerImageName
 @ActiveProfiles("test")
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class IndexServiceTest(
-    val indexService: IndexService,
-    val indexRepository: IndexRepository,
+    @Autowired val indexService: IndexService,
+    @Autowired val indexRepository: IndexRepository,
 ) {
 
 
