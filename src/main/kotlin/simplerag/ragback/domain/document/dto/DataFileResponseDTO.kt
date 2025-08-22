@@ -9,18 +9,18 @@ import kotlin.math.round
 
 data class DataFilePreviewResponseList(
     val dataFilePreviewResponseList: List<DataFilePreviewResponse>,
+)
+
+data class DataFilePreviewResponse(
+    val id: Long,
+    val sha256: String,
 ) {
-    data class DataFilePreviewResponse(
-        val id: Long,
-        val sha256: String,
-    ) {
-        companion object {
-            fun from(file: DataFile): DataFilePreviewResponse =
-                DataFilePreviewResponse(
-                    id = file.id,
-                    sha256 = file.sha256,
-                )
-        }
+    companion object {
+        fun from(file: DataFile): DataFilePreviewResponse =
+            DataFilePreviewResponse(
+                id = file.id,
+                sha256 = file.sha256,
+            )
     }
 }
 
