@@ -1,6 +1,8 @@
 package simplerag.ragback.global.util.converter
 
 import org.springframework.web.multipart.MultipartFile
+import simplerag.ragback.global.error.CustomException
+import simplerag.ragback.global.error.ErrorCode
 import java.io.BufferedInputStream
 import java.security.DigestInputStream
 import java.security.MessageDigest
@@ -19,21 +21,13 @@ fun MultipartFile.resolveContentType(): String {
     if (!this.contentType.isNullOrBlank()) return this.contentType!!
     val ext = this.originalFilename?.substringAfterLast('.', "")?.lowercase()
     return when (ext) {
-        "png" -> "image/png"
-        "jpg", "jpeg" -> "image/jpeg"
         "pdf" -> "application/pdf"
         "txt" -> "text/plain"
         "csv" -> "text/csv"
         "md" -> "text/markdown"
         "json" -> "application/json"
-        "zip" -> "application/zip"
-        "doc" -> "application/msword"
         "docx" -> "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        "xls" -> "application/vnd.ms-excel"
-        "xlsx" -> "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        "ppt" -> "application/vnd.ms-powerpoint"
-        "pptx" -> "application/vnd.openxmlformats-officedocument.presentationml.presentation"
-        else -> "application/octet-stream"
+        else -> throw CustomException(ErrorCode.INVALID_FILE_TYPE)
     }
 }
 

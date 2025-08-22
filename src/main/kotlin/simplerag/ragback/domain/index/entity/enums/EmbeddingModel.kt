@@ -21,7 +21,10 @@ enum class EmbeddingModel(
     BGE_M3(1024, "BAAI/bge-m3"),
 
     // E5
-    E5_BASE(768, "intfloat/e5-base-v2");
+    E5_BASE(768, "intfloat/e5-base-v2"),
+
+    // fake
+    FAKE(1, "fake");
 
     companion object {
         fun findByModelId(modelId: String): EmbeddingModel? {

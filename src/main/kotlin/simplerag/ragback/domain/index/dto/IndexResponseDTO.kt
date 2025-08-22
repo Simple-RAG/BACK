@@ -18,7 +18,7 @@ data class IndexPreviewResponseList(
 }
 
 data class IndexPreviewResponse(
-    var indexId: Long?,
+    var indexId: Long,
     val snapshotName: String,
 ) {
     companion object {
@@ -32,7 +32,7 @@ data class IndexPreviewResponse(
 }
 
 data class IndexDetailResponse(
-    var indexId: Long?,
+    val indexId: Long,
     val snapshotName: String,
     val chunkingSize: Int,
     val overlapSize: Int,

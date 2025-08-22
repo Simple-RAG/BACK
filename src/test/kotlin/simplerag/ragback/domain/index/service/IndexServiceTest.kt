@@ -7,10 +7,10 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.testcontainers.containers.PostgreSQLContainer
-import org.testcontainers.junit.jupiter.Container
 import simplerag.ragback.domain.index.dto.IndexCreateRequest
 import simplerag.ragback.domain.index.dto.IndexUpdateRequest
 import simplerag.ragback.domain.index.entity.Index
@@ -21,6 +21,9 @@ import simplerag.ragback.global.error.IndexException
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.test.context.TestConstructor
 import org.testcontainers.utility.DockerImageName
+import simplerag.ragback.domain.document.entity.DataFile
+import simplerag.ragback.domain.document.repository.DataFileRepository
+import simplerag.ragback.domain.index.repository.ChunkEmbeddingRepository
 
 
 @SpringBootTest
@@ -29,9 +32,9 @@ import org.testcontainers.utility.DockerImageName
 class IndexServiceTest(
     @Autowired val indexService: IndexService,
     @Autowired val indexRepository: IndexRepository,
+    @Autowired val dataFileRepository: DataFileRepository,
+    @Autowired val chunkEmbeddingRepository: ChunkEmbeddingRepository,
 ) {
-
-
 
     companion object {
 
@@ -48,15 +51,18 @@ class IndexServiceTest(
 
     @AfterEach
     fun cleanUp() {
-        indexRepository.deleteAll()
+        chunkEmbeddingRepository.deleteAllInBatch() // 자식 먼저
+        indexRepository.deleteAllInBatch()          // 부모 나중
     }
 
     @Test
     @DisplayName("인덱스 생성이 정상 작동한다")
     fun createIndexTest() {
         // given
+        val datafile = dataFileRepository.save(DataFile("a", "txt", 1000000L, "sdf", "sfd"))
+
         val indexCreateRequest =
-            IndexCreateRequest("test", 1, 0, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
+            IndexCreateRequest(listOf(datafile.id), "test", 1, 0, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_SMALL, true)
 
         // when
         val createIndexResponse = indexService.createIndex(indexCreateRequest)
@@ -73,7 +79,7 @@ class IndexServiceTest(
     fun createIndexTestWithOverlapSize() {
         // given
         val indexCreateRequest =
-            IndexCreateRequest("test", 1, 1, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
+            IndexCreateRequest(listOf(1),"test", 1, 1, SimilarityMetric.COSINE, 1, EmbeddingModel.TEXT_EMBEDDING_3_LARGE, true)
 
         // when * then
         val message = assertThrows<IndexException> {

@@ -20,8 +20,9 @@ class ChunkEmbedding(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "indexes_id", nullable = false)
     val index: Index,
-
+) : BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chunk_embeddings_id")
-    val id: Long? = null,
-) : BaseEntity()
+    val id: Long = 0
+
+}

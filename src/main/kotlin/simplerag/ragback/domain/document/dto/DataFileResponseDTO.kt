@@ -18,7 +18,7 @@ data class DataFilePreviewResponse(
     companion object {
         fun from(file: DataFile): DataFilePreviewResponse =
             DataFilePreviewResponse(
-                id = requireNotNull(file.id) { "DataFile.id is null" },
+                id = file.id,
                 sha256 = file.sha256,
             )
     }
@@ -40,33 +40,33 @@ data class DataFileDetailResponseList(
                 hasNext = hasNext,
             )
     }
-}
 
-data class DataFileDetailResponse(
-    var id: Long?,
-    val title: String,
-    val type: String,
-    val lastModified: LocalDateTime,
-    val sizeMB: Double,
-    val tags: List<TagDTO>,
-    val sha256: String,
-) {
-    companion object {
-        fun from(file: DataFile, tags: List<TagDTO>): DataFileDetailResponse =
-            DataFileDetailResponse(
-                id = requireNotNull(file.id) { "DataFile.id is null" },
-                title = file.title,
-                type = file.type,
-                lastModified = file.updatedAt,
-                sizeMB = file.sizeBytes.toMegaBytes(2),
-                tags = tags,
-                sha256 = file.sha256,
-            )
+    data class DataFileDetailResponse(
+        val id: Long,
+        val title: String,
+        val type: String,
+        val lastModified: LocalDateTime,
+        val sizeMB: Double,
+        val tags: List<TagDTO>,
+        val sha256: String,
+    ) {
+        companion object {
+            fun from(file: DataFile, tags: List<TagDTO>): DataFileDetailResponse =
+                DataFileDetailResponse(
+                    id = file.id,
+                    title = file.title,
+                    type = file.type,
+                    lastModified = file.updatedAt,
+                    sizeMB = file.sizeBytes.toMegaBytes(2),
+                    tags = tags,
+                    sha256 = file.sha256,
+                )
+        }
     }
 }
 
 data class TagDTO(
-    val id: Long?,
+    val id: Long,
     val name: String,
 ) {
     companion object {
