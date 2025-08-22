@@ -7,6 +7,13 @@ import org.springframework.web.multipart.MultipartFile
 
 @Component
 class PdfContentExtractor : ContentExtractor {
+
+    private val TYPE = "application/pdf"
+
+    override fun supports(type: String): Boolean {
+        return TYPE == type
+    }
+
     override fun extract(file: MultipartFile): String {
         file.inputStream.use { input ->
             PDDocument.load(input).use { doc ->

@@ -13,7 +13,6 @@ import simplerag.ragback.domain.index.repository.IndexRepository
 import simplerag.ragback.global.error.CustomException
 import simplerag.ragback.global.error.ErrorCode
 import simplerag.ragback.global.error.IndexException
-import simplerag.ragback.global.util.loader.ContentLoader
 import simplerag.ragback.global.util.TextChunker
 
 @Service
@@ -21,7 +20,6 @@ class IndexService(
     private val indexRepository: IndexRepository,
     private val embedder: Embedder,
     private val dataFileRepository: DataFileRepository,
-    private val contentLoader: ContentLoader,
 ) {
 
     @Transactional
@@ -39,8 +37,7 @@ class IndexService(
         val index = indexRepository.save(Index.toIndex(req))
 
         for (file in files) {
-            val url = file.fileUrl
-            val content = contentLoader.load(url)
+            val content = file.content
             if (content.isBlank()) continue
 
             val chunks = TextChunker.chunkByCharsSeq(content, req.chunkingSize, req.overlapSize)

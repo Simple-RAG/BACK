@@ -5,3 +5,10 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create-drop
+  ai:
+    openai:
+      api-key: dummy
+    model:
+      embedding:
+        options:
+        model: text-embedding-3-small

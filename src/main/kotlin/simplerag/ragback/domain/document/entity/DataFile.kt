@@ -22,16 +22,17 @@ class DataFile(
     @Column(nullable = false, length = 64)
     val sha256: String,
 
-    @Column(nullable = false, length = 2048, name = "file_url")
-    val fileUrl: String,
+    @Column(nullable = false)
+    @Lob
+    val content: String,
 ) : BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "data_files_id")
     val id: Long = 0
 
     companion object {
-        fun from(title: String, type: String, sizeBytes : Long, sha256 : String, fileUrl: String): DataFile {
-            return DataFile(title, type, sizeBytes, sha256, fileUrl)
+        fun from(title: String, type: String, sizeBytes : Long, sha256 : String, content: String): DataFile {
+            return DataFile(title, type, sizeBytes, sha256, content)
         }
     }
 }
