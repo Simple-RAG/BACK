@@ -52,4 +52,10 @@ class PromptService(
         prompt.update(promptUpdateRequest)
         return PromptPreviewResponse.from(prompt)
     }
+
+    @Transactional
+    fun deletePrompt(promptId: Long) {
+        val prompt = promptRepository.findByIdOrNull(promptId) ?: throw  PromptException(ErrorCode.NOT_FOUND)
+        promptRepository.delete(prompt)
+    }
 }

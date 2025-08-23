@@ -49,4 +49,12 @@ class PromptController(
         return ApiResponse.ok(updatedPrompt)
     }
 
+    @DeleteMapping("/{promptId}")
+    fun deletePrompt(
+        @PathVariable promptId: Long,
+    ): ApiResponse<Unit> {
+        promptService.deletePrompt(promptId)
+        return ApiResponse.ok(null, "프롬프트가 삭제되었습니다.")
+    }
+
 }
