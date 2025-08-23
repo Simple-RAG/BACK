@@ -3,10 +3,8 @@ package simplerag.ragback.domain.prompt.controller
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import simplerag.ragback.domain.prompt.dto.PromptCreateRequest
-import simplerag.ragback.domain.prompt.dto.PromptDetailResponse
-import simplerag.ragback.domain.prompt.dto.PromptPreviewResponse
-import simplerag.ragback.domain.prompt.dto.PromptPreviewResponseList
+import simplerag.ragback.domain.index.dto.IndexUpdateRequest
+import simplerag.ragback.domain.prompt.dto.*
 import simplerag.ragback.domain.prompt.service.PromptService
 import simplerag.ragback.global.response.ApiResponse
 
@@ -40,6 +38,15 @@ class PromptController(
     ): ApiResponse<PromptPreviewResponseList> {
         val promptPreviewResponseList = promptService.getPrompts(cursor, take)
         return ApiResponse.ok(promptPreviewResponseList)
+    }
+
+    @PutMapping("/{promptId}")
+    fun updatePrompt(
+        @RequestBody @Valid promptUpdateRequest: PromptUpdateRequest,
+        @PathVariable promptId: Long,
+    ): ApiResponse<PromptPreviewResponse> {
+        val updatedPrompt = promptService.updatePrompt(promptUpdateRequest, promptId)
+        return ApiResponse.ok(updatedPrompt)
     }
 
 }

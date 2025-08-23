@@ -25,5 +25,8 @@ enum class ErrorCode(
     S3_UNSUPPORTED_CONTENT_TYPE(HttpStatus.BAD_REQUEST, "S3_007", "지원하지 않는 Content-Type 입니다."),
 
     // index
-    OVERLAP_OVERFLOW(HttpStatus.BAD_REQUEST, "INDEX_001", "overlap 크기는 chunking 크기를 넘을 수 없습니다.")
+    OVERLAP_OVERFLOW(HttpStatus.BAD_REQUEST, "INDEX_001", "overlap 크기는 chunking 크기를 넘을 수 없습니다."),
+
+    // prompt
+    CUSTOM_SYSTEM_PROMPT(HttpStatus.BAD_REQUEST, "PROMPT_001", "preset이 Custom이 아닐 때 systemPrompt의 조작이 불가능합니다.")
 }

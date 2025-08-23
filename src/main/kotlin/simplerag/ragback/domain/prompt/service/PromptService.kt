@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import simplerag.ragback.domain.document.dto.DataFileDetailResponseList
 import simplerag.ragback.domain.document.dto.TagDTO
-import simplerag.ragback.domain.prompt.dto.PromptCreateRequest
-import simplerag.ragback.domain.prompt.dto.PromptDetailResponse
-import simplerag.ragback.domain.prompt.dto.PromptPreviewResponse
-import simplerag.ragback.domain.prompt.dto.PromptPreviewResponseList
+import simplerag.ragback.domain.prompt.dto.*
 import simplerag.ragback.domain.prompt.entity.Prompt
 import simplerag.ragback.domain.prompt.repository.PromptRepository
 import simplerag.ragback.global.error.ErrorCode
@@ -44,5 +41,15 @@ class PromptService(
         val nextCursor = prompts.content.lastOrNull()?.id
 
         return PromptPreviewResponseList.from(prompts.content, nextCursor, prompts.hasNext())
+    }
+
+    @Transactional
+    fun updatePrompt(
+        promptUpdateRequest: PromptUpdateRequest,
+        promptId: Long
+    ): PromptPreviewResponse {
+        val prompt = promptRepository.findByIdOrNull(promptId) ?: throw  PromptException(ErrorCode.NOT_FOUND)
+        prompt.update(promptUpdateRequest)
+        return PromptPreviewResponse.from(prompt)
     }
 }
