@@ -1,10 +1,8 @@
 package simplerag.ragback.domain.prompt.controller
 
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.*
 import simplerag.ragback.domain.prompt.dto.PromptCreateRequest
 import simplerag.ragback.domain.prompt.dto.PromptPreviewResponse
 import simplerag.ragback.domain.prompt.service.PromptService
@@ -17,6 +15,7 @@ class PromptController(
 ) {
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     fun createPrompt(
         @RequestBody @Valid promptCreateRequest: PromptCreateRequest
     ): ApiResponse<PromptPreviewResponse> {
