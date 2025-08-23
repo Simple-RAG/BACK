@@ -1,6 +1,7 @@
 package simplerag.ragback.domain.prompt.entity
 
 import jakarta.persistence.*
+import simplerag.ragback.domain.prompt.dto.PromptCreateRequest
 import simplerag.ragback.domain.prompt.entity.enums.PreSet
 import simplerag.ragback.global.entity.BaseEntity
 
@@ -23,4 +24,16 @@ class Prompt(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "prompts_id")
     val id: Long = 0
+
+    companion object {
+        fun from(
+            promptCreateRequest: PromptCreateRequest
+        ): Prompt {
+            return Prompt(
+                promptCreateRequest.name,
+                promptCreateRequest.preSet,
+                promptCreateRequest.systemPrompt
+            )
+        }
+    }
 }
