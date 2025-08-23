@@ -1,20 +1,34 @@
 package simplerag.ragback.domain.prompt.dto
 
-import jakarta.persistence.Column
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.Lob
 import simplerag.ragback.domain.prompt.entity.Prompt
 import simplerag.ragback.domain.prompt.entity.enums.PreSet
 
+data class PromptPreviewResponseList(
+    val promptPreviewResponseList: List<PromptPreviewResponse>,
+    val cursor: Long?,
+    val hasNext: Boolean
+) {
+    companion object {
+        fun from(prompts: List<Prompt>, cursor: Long?, hasNext: Boolean): PromptPreviewResponseList =
+            PromptPreviewResponseList(
+                promptPreviewResponseList = prompts.map { prompt ->
+                    PromptPreviewResponse.from(prompt)
+                },
+                cursor = cursor,
+                hasNext = hasNext,
+            )
+    }
+}
+
 data class PromptPreviewResponse(
     val id: Long,
+    val name: String,
 ) {
     companion object {
         fun from(
             prompt: Prompt
         ): PromptPreviewResponse {
-            return PromptPreviewResponse(prompt.id)
+            return PromptPreviewResponse(prompt.id, prompt.name)
         }
     }
 }

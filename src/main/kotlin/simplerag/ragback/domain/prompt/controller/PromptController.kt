@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*
 import simplerag.ragback.domain.prompt.dto.PromptCreateRequest
 import simplerag.ragback.domain.prompt.dto.PromptDetailResponse
 import simplerag.ragback.domain.prompt.dto.PromptPreviewResponse
+import simplerag.ragback.domain.prompt.dto.PromptPreviewResponseList
 import simplerag.ragback.domain.prompt.service.PromptService
 import simplerag.ragback.global.response.ApiResponse
 
@@ -30,6 +31,15 @@ class PromptController(
     ): ApiResponse<PromptDetailResponse> {
         val promptDetail = promptService.getPrompt(promptId)
         return ApiResponse.ok(promptDetail)
+    }
+
+    @GetMapping
+    fun getPrompts(
+        @RequestParam cursor: Long,
+        @RequestParam take: Int,
+    ): ApiResponse<PromptPreviewResponseList> {
+        val promptPreviewResponseList = promptService.getPrompts(cursor, take)
+        return ApiResponse.ok(promptPreviewResponseList)
     }
 
 }
