@@ -21,3 +21,8 @@ class FileException(
     override val message: String,
     override val cause: Throwable? = null,
 ) : CustomException(errorCode, message, cause)
+
+class PromptException(
+    override val errorCode: ErrorCode,
+    override val cause: Throwable? = null,
+) : CustomException(errorCode, errorCode.message, cause)
